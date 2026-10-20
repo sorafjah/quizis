@@ -19,6 +19,7 @@
   --hint:#E0AE33; --hint-soft:#FFF6DB; --hint-ink:#835800;
   --timer:#E04A3C;
   --maru:#D8402F; --batsu:#2462C8;
+  --star:#F2B632; --star-ink:#B07800; --cloud:#C9D3E0;
   --owl:#A87A52; --owl-dark:#8C6341; --owl-belly:#F3E3C6; --beak:#E8963A;
   --font:"BIZ UDPGothic","Hiragino Sans","Hiragino Kaku Gothic ProN","Yu Gothic",Meiryo,sans-serif;
   color-scheme:light;
@@ -193,9 +194,11 @@ textarea:focus,.tin:focus,.etitle:focus,.stepper input:focus{outline:3px solid v
 .cmark{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;gap:1vmin;background:rgba(255,255,255,.88);border-radius:1.4vmin;animation:pop .3s ease-out;pointer-events:none;overflow:hidden}
 .cmark svg{width:clamp(44px,10vmin,130px);height:clamp(44px,10vmin,130px);flex:none}
 .ctag.mo{background:var(--maru)!important} .ctag.mx{background:var(--batsu)!important}
+.ctag.ms{background:var(--star-ink)!important} .ctag.mc{background:var(--sub)!important}
 .choice .ctag{z-index:2}
 .cmark b{font-size:clamp(15px,3.2vmin,44px);white-space:nowrap}
-.choice.ox .cmark svg{width:clamp(50px,12vmin,160px);height:clamp(50px,12vmin,160px)}
+.choice.ox .cmark{background:transparent;justify-content:flex-end;padding-right:3vmin}
+.choice.ox .cmark svg{width:clamp(44px,10vmin,130px);height:clamp(44px,10vmin,130px)}
 .cmark.o b{color:var(--maru)} .cmark.x b{color:var(--batsu)}
 .hints{display:flex;flex-direction:column;gap:1.6vmin;min-height:0}
 .hint{background:var(--hint-soft);border:3px solid var(--hint);border-radius:1.8vmin;padding:1.2vmin 1.8vmin;display:grid;gap:.8vmin;animation:pop .4s ease-out}
@@ -225,6 +228,7 @@ textarea:focus,.tin:focus,.etitle:focus,.stepper input:focus{outline:3px solid v
 .markov svg{width:52vmin;height:52vmin;animation:pop .35s ease-out}
 .markov b{font-size:clamp(30px,9vmin,130px);line-height:1.1}
 .markov.o b{color:var(--maru)} .markov.x b{color:var(--batsu)}
+.markov.s b{color:var(--star-ink)} .markov.c b{color:var(--sub)}
 #toast{position:fixed;left:50%;bottom:max(24px,env(safe-area-inset-bottom,0px));transform:translateX(-50%);z-index:100;background:var(--ink);color:#fff;
   padding:12px 20px;border-radius:12px;font-weight:700;max-width:calc(100% - 32px);text-align:center;animation:fade .2s}
 @keyframes pop{0%{transform:scale(.85);opacity:0}100%{transform:scale(1);opacity:1}}
@@ -668,7 +672,7 @@ function renderForm(){
     </section>
     <section class="fsec">
       <div class="frow"><span class="lab">○×の ${R('出','だ')}しかた</span>${seg('markStyle',s.markStyle,[['big',`${R('大','おお')}きく ${R('画面','がめん')}に`],['glow',`えらんだ ${R('選択肢','せんたくし')}に`]])}
-        <span class="note">「えらんだ ${R('選択肢','せんたくし')}に」は、${R('出題','しゅつだい')}${R('中','ちゅう')}に ${R('選択肢','せんたくし')}を タップして えらんでから ○× を ${R('出','だ')}すと、その ${R('選択肢','せんたくし')}に つくよ。えらんでいない ときの ○ は、${R('正解','せいかい')}の ${R('選択肢','せんたくし')}に つくよ（${R('意見','いけん')}が わかれた ときなど）。${R('選択肢','せんたくし')}の ない ${R('問題','もんだい')}では ${R('大','おお')}きく ${R('出','で')}るよ。</span></div>
+        <span class="note">「えらんだ ${R('選択肢','せんたくし')}に」は、${R('出題','しゅつだい')}${R('中','ちゅう')}に ${R('選択肢','せんたくし')}を タップして えらんでから ○× を ${R('出','だ')}すと、その ${R('選択肢','せんたくし')}に つくよ。えらんでいない ときの ○ は、${R('正解','せいかい')}の ${R('選択肢','せんたくし')}に つくよ（${R('意見','いけん')}が わかれた ときなど）。○× クイズでは、○×の ${R('記号','きごう')}と まぎれないように、せいかいは ★、おしいは くもの ${R('形','かたち')}で ${R('出','で')}るよ。${R('選択肢','せんたくし')}の ない ${R('問題','もんだい')}では ${R('大','おお')}きく ${R('出','で')}るよ。</span></div>
       <div class="frow"><span class="lab">${R('大','おお')}きな ○× が ${R('消','き')}えるまで</span>${seg('markHold',s.markHold,[['2','2秒'],['3','3秒'],['5','5秒'],['0',`タップするまで`]])}</div>
       <div class="frow"><span class="lab">○×の ${R('音','おと')}</span><div class="stepwrap">${seg('oxSound',s.oxSound,[['quiz','ピンポン・ブー'],['soft',`やさしい ${R('音','おと')}`],['off','なし']])}
           <button type="button" class="btn sm" data-act="test-o">♪ ○</button><button type="button" class="btn sm" data-act="test-x">♪ ×</button></div></div>
@@ -852,15 +856,23 @@ const MARK_SVG={
   x:`<svg viewBox="0 0 100 100" aria-hidden="true"><path d="M20 20 L80 80 M80 20 L20 80" stroke="var(--batsu)" stroke-width="12" stroke-linecap="round" fill="none"/></svg>`
 };
 const MARK_TXT={o:'せいかい！',x:'おしい！'};
+/* ○×クイズでは ○×の記号と まぎれないように、せいかい＝★、おしい＝くも に する */
+const OX_FB={
+  o:`<svg viewBox="0 0 100 100" aria-hidden="true"><path d="M50 6 L62 37 L95 38 L69 58 L78 91 L50 72 L22 91 L31 58 L5 38 L38 37 Z" fill="var(--star)" stroke="#fff" stroke-width="3" stroke-linejoin="round"/></svg>`,
+  x:`<svg viewBox="0 0 100 100" aria-hidden="true"><path d="M26 74 Q8 74 10 58 Q12 44 28 46 Q30 26 50 26 Q68 26 72 42 Q90 40 91 58 Q92 74 74 74 Z" fill="var(--cloud)"/><circle cx="40" cy="58" r="4" fill="var(--sub)"/><circle cx="60" cy="58" r="4" fill="var(--sub)"/></svg>`
+};
+const isOXq=()=>!!P.q&&P.q.type==='ox';
+const fbSym=kind=>isOXq()?OX_FB[kind]:MARK_SVG[kind];
+const fbCls=kind=>isOXq()?(kind==='o'?'s':'c'):kind;
 function applyChoiceState(){
   $$('#pCh .choice').forEach(b=>{
     const k=+b.dataset.k,corr=P.answerShown&&k===P.q.correct;
     b.classList.toggle('sel',P.selected===k);b.classList.toggle('correct',corr);b.classList.toggle('dim',P.answerShown&&!corr);
     const cm=P.cardMark&&P.cardMark.k===k?P.cardMark.kind:'';
     const tag=b.querySelector('.ctag');const t=cm?MARK_TXT[cm]:(corr?'こたえ':(P.selected===k?'えらんだ':''));tag.textContent=t;tag.hidden=!t;
-    tag.classList.toggle('mo',cm==='o');tag.classList.toggle('mx',cm==='x');
+    const fc=cm?fbCls(cm):'';tag.classList.toggle('mo',fc==='o');tag.classList.toggle('mx',fc==='x');tag.classList.toggle('ms',fc==='s');tag.classList.toggle('mc',fc==='c');
     const m=b.querySelector('.cmark');
-    if(P.cardMark&&P.cardMark.k===k){m.hidden=false;m.className='cmark '+P.cardMark.kind;m.innerHTML=MARK_SVG[P.cardMark.kind];}
+    if(P.cardMark&&P.cardMark.k===k){m.hidden=false;m.className='cmark '+fbCls(P.cardMark.kind);m.innerHTML=fbSym(P.cardMark.kind);}
     else{m.hidden=true;m.innerHTML='';}
   });
 }
@@ -929,7 +941,7 @@ function mark(kind){
     const k=P.selected>=0?P.selected:(kind==='o'?P.q.correct:-1);
     if(k>=0){P.cardMark={k,kind};applyChoiceState();return;}
   }
-  const m=$('#pMark');m.className='markov '+kind;m.innerHTML=MARK_SVG[kind]+`<b>${MARK_TXT[kind]}</b>`;m.hidden=false;
+  const m=$('#pMark');m.className='markov '+fbCls(kind);m.innerHTML=fbSym(kind)+`<b>${MARK_TXT[kind]}</b>`;m.hidden=false;
   clearTimeout(P.markT);const hold=+P.quiz.settings.markHold;
   if(hold>0)P.markT=setTimeout(hideMark,hold*1000);
 }
