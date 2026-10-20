@@ -20,6 +20,7 @@
   --timer:#E04A3C;
   --maru:#D8402F; --batsu:#2462C8;
   --spark:#F2B632;
+  --tile:#3D6FC4; --cardline:#8C98AA;
   --owl:#A87A52; --owl-dark:#8C6341; --owl-belly:#F3E3C6; --beak:#E8963A;
   --font:"BIZ UDPGothic","Hiragino Sans","Hiragino Kaku Gothic ProN","Yu Gothic",Meiryo,sans-serif;
   color-scheme:light;
@@ -112,6 +113,10 @@ button{font-family:var(--font);color:var(--ink)}
 #editor{display:grid;grid-template-rows:auto minmax(0,1fr);gap:12px}
 .etop{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
 .etitle{flex:1 1 240px;min-width:0;min-height:48px;font-size:20px;font-weight:700;border:2px solid var(--line);border-radius:10px;padding:0 12px;background:var(--panel)}
+.fpanel{flex:1 0 100%;display:flex;flex-wrap:wrap;align-items:center;gap:10px;background:var(--hint-soft);border:2px solid var(--hint);border-radius:12px;padding:8px 12px}
+.fword{font-size:22px;font-weight:700}
+.fpanel .tin{width:auto;flex:1 1 180px;min-width:0}
+.rprev{font-size:20px;line-height:2;background:var(--bg);border-radius:8px;padding:2px 12px}
 .estatus{color:var(--sub);font-size:14px;min-width:7em}
 .ebody{display:grid;grid-template-columns:270px minmax(0,1fr);gap:14px;min-height:0}
 .elist{background:var(--panel);border:2px solid var(--line);border-radius:14px;padding:10px;display:flex;flex-direction:column;gap:6px;min-height:0}
@@ -190,8 +195,8 @@ textarea:focus,.tin:focus,.etitle:focus,.stepper input:focus{outline:3px solid v
 .qimg{position:relative}
 .rv{position:relative;overflow:hidden;border-radius:1.2vmin;flex:none}
 .qimg .rv img{width:100%;height:100%;max-width:none;max-height:none;display:block;border-radius:0;transition:filter .7s ease,transform .9s ease}
-.tiles{position:absolute;inset:0;display:grid;gap:.5vmin}
-.tile{background:var(--tl);display:grid;place-items:center;color:rgba(255,255,255,.75);font-weight:700;font-size:clamp(18px,5vmin,70px);transition:opacity .5s ease,transform .5s ease}
+.tiles{position:absolute;inset:-1px;display:grid;gap:0}
+.tile{background:var(--tile);box-shadow:inset 0 0 0 .3vmin rgba(255,255,255,.5);display:grid;place-items:center;color:rgba(255,255,255,.75);font-weight:700;font-size:clamp(18px,5vmin,70px);transition:opacity .5s ease,transform .5s ease}
 .tile.open{opacity:0;transform:scale(.6) rotate(-6deg)}
 .rvstep{position:absolute;right:1vmin;bottom:1vmin;background:var(--ink);color:#fff;font-weight:700;font-size:clamp(13px,2.2vmin,26px);border-radius:999px;padding:0 .7em;opacity:.85}
 .qtext{flex:1 1 50%;min-width:0;display:flex;align-items:center;overflow:auto;font-size:clamp(22px,5.4vmin,78px);font-weight:700;line-height:1.55}
@@ -204,7 +209,7 @@ textarea:focus,.tin:focus,.etitle:focus,.stepper input:focus{outline:3px solid v
 .aimg{flex:1 1 50%;min-width:0;height:100%;display:flex;align-items:center;justify-content:center}
 .aimg img{max-height:100%;max-width:100%;object-fit:contain}
 .choices{display:grid;grid-template-columns:repeat(var(--n,4),minmax(0,1fr));gap:2vmin;animation:pop .35s ease-out}
-.choice{position:relative;background:var(--panel);border:.6vmin solid var(--cc);border-radius:2vmin;padding:1.4vmin 1.8vmin;display:flex;flex-direction:column;
+.choice{position:relative;background:var(--panel);border:.6vmin solid var(--cardline);border-radius:2vmin;padding:1.4vmin 1.8vmin;display:flex;flex-direction:column;
   align-items:stretch;justify-content:center;gap:1vmin;min-height:11vmin;cursor:pointer;text-align:left;transition:opacity .25s,box-shadow .2s;font:inherit}
 .choice .cimg{display:flex;justify-content:center;min-height:0}
 .choice .cimg img{max-height:19vh;object-fit:contain;border-radius:1vmin}
@@ -221,6 +226,8 @@ textarea:focus,.tin:focus,.etitle:focus,.stepper input:focus{outline:3px solid v
 .choice.sel{box-shadow:0 0 0 .9vmin var(--ink)}
 .choice.correct{background:var(--ok-soft);box-shadow:0 0 0 1.1vmin var(--ok);z-index:3}
 .choice.dim{opacity:.22;filter:grayscale(.7)}
+.choice{transition:transform .45s ease}
+.choice.correct{transform:scale(1.04)}
 .choice.dim,.choice.miss{transition:opacity .6s,filter .6s}
 .choice.fxon{animation:win 1.1s ease-out}
 .choice.miss{opacity:.4;filter:grayscale(.6);animation:shake .5s ease-in-out}
@@ -326,8 +333,15 @@ textarea:focus,.tin:focus,.etitle:focus,.stepper input:focus{outline:3px solid v
     <button class="btn" data-act="e-back">← もどる</button>
     <input id="eTitle" class="etitle" type="text" placeholder="クイズの なまえ" aria-label="クイズの なまえ">
     <span id="eStatus" class="estatus"></span>
+    <button class="btn" data-act="furi-open">ふりがな</button>
     <button class="btn" data-act="e-try">この <ruby>問題<rt>もんだい</rt></ruby>から ためす</button>
     <button class="btn primary" data-act="e-export">ファイルにする</button>
+    <div class="fpanel" id="fPanel" hidden>
+      <span class="fword" id="fWord"></span><span>の よみ</span>
+      <input id="fYomi" class="tin" type="text" placeholder="ひらがなで" aria-label="よみ">
+      <button class="btn primary" data-act="furi-apply">つける</button>
+      <button class="btn" data-act="furi-cancel">やめる</button>
+    </div>
   </header>
   <div class="ebody">
     <aside class="elist scroll">
@@ -370,16 +384,15 @@ textarea:focus,.tin:focus,.etitle:focus,.stepper input:focus{outline:3px solid v
       <button class="btn" data-act="guide-close">閉じる</button>
     </header>
     <div class="gbody scroll">
-      <p class="glead">iPad で出題し、Apple TV などで大型ディスプレイにミラーリングして使うクイズアプリです。問題は PC で作り、ファイルにして iPad に渡します。この説明は、ホーム画面の「使い方」ボタンからいつでも開けます。</p>
+      <p class="glead">iPad で出題し、Apple TV などで大型ディスプレイにミラーリングして使うクイズアプリです。問題は iPad でも PC でも作れます。この説明は、ホーム画面の「使い方」ボタンからいつでも開けます。</p>
 
       <section class="gsec">
         <h3><span class="gn">1</span>準備の流れ</h3>
         <ol>
-          <li>PC でこのページを開き、「新しい クイズを つくる」を押します。</li>
-          <li>問題を作ります。入力した内容は自動で保存されます。</li>
-          <li>「ファイルにする」を押すと、クイズ全体が 1 つの .json ファイルとして保存されます（画像も中に入ります）。</li>
-          <li>ファイルを iPad に送ります（Google ドライブ、メール、AirDrop など）。</li>
-          <li>iPad でこのページを開き、「ファイルから 読みこむ」でファイルを選びます。同じクイズを読みこむと、新しいほうに置きかわります。</li>
+          <li>「新しい クイズを つくる」を押して、問題を作ります。入力した内容は自動で保存されます。</li>
+          <li>「この問題から ためす」で、出題画面を確かめられます。</li>
+          <li>出題する iPad で作った場合は、そのまま使えます。</li>
+          <li>別の端末（PC やほかの iPad）で作った場合は、「ファイルにする」でクイズを 1 つの .json ファイルに保存し（画像も中に入ります）、Google ドライブ・メール・AirDrop などで出題する iPad に送ります。出題する iPad で「ファイルから 読みこむ」を押してファイルを選びます。同じクイズを読みこむと、新しいほうに置きかわります。</li>
           <li>iPad の画面を Apple TV にミラーリングし、クイズの「はじめる」を押します。</li>
         </ol>
         <p class="gtip">iPad では Safari の共有メニューから「ホーム画面に追加」して開くと、アドレスバーが消えて画面を広く使えます。</p>
@@ -389,12 +402,13 @@ textarea:focus,.tin:focus,.etitle:focus,.stepper input:focus{outline:3px solid v
         <h3><span class="gn">2</span>問題の作り方</h3>
         <dl class="gdl">
           <dt>答えかた</dt><dd>「A〜D から選ぶ（2〜4 択）」「○× クイズ」「選ばない（口で答える）」の 3 種類です。A〜D の選択肢には、文字と画像のどちらか、または両方を入れられます。</dd>
-          <dt>画像</dt><dd>枠をクリックして選ぶほか、ドラッグ＆ドロップや、コピーした画像の Ctrl+V（Mac は ⌘+V）でも入れられます。長い辺が 1280px になるよう自動で縮小されます。</dd>
+          <dt>画像</dt><dd>枠をタップ（クリック）して、写真やファイルから選びます。PC では、ドラッグ＆ドロップや、コピーした画像の貼り付け（Ctrl+V／⌘+V）でも入れられます。長い辺が 1280px になるよう自動で縮小されます。</dd>
           <dt>画像の見せかた</dt><dd>問題の画像は「パネルをめくる」「ぼかしがとれる」「アップから引いていく」で少しずつ見せられます。ボタンで進めるか、決めた秒数ごとに自動で進めるかを選べます。</dd>
           <dt>選択肢を出すタイミング</dt><dd>「はじめから」「ボタンを押したら」「時間がたったら」から選べます。どれにしても、出題中に「選択肢を出す／かくす」ボタンでいつでも切りかえられます。</dd>
           <dt>ヒント</dt><dd>いくつでも追加できます。それぞれ「ボタンで出す」か「○秒たったら自動で出す」かを選べます。</dd>
           <dt>制限時間</dt><dd>クイズ全体の設定で決め、問題ごとに変えることもできます。0 秒にすると時間制限なしになります。</dd>
-          <dt>ふりがな</dt><dd><code>漢字《かんじ》</code> と書くと、漢字の上にふりがながつきます。漢字以外も含めたいときは <code>｜富士山《ふじさん》</code> のように「｜」で始まりを示します。</dd>
+          <dt>ふりがな</dt><dd>ふりがなをつけたい言葉を選び（iPad では長押し、PC ではドラッグ）、画面上の「ふりがな」ボタンを押して読みを入力します。文の中には <code>｜富士山《ふじさん》</code> という形で入り、入力欄の下と出題画面ではふりがな付きで表示されます。<br>
+            記号を直接入力することもできます。「｜」は「たてぼう」、「《》」は「かっこ」と打って変換すると出ます（どちらも全角）。「｜」はふりがなをつける範囲の始まりの印です。漢字だけの言葉なら省略して <code>富士山《ふじさん》</code> と書いても同じです。</dd>
           <dt>全体の設定</dt><dd>一覧の一番上「クイズ全体の 設定」で、タイマーの見せかた、○× の出しかた、音のあり・なしなどを決めます。</dd>
         </dl>
       </section>
@@ -406,8 +420,8 @@ textarea:focus,.tin:focus,.etitle:focus,.stepper input:focus{outline:3px solid v
           <dt>ヒント</dt><dd>上から順に 1 つずつ出ます。</dd>
           <dt>画像をめくる</dt><dd>画像を少しずつ見せる問題で、次の段階に進めます。</dd>
           <dt>選択肢を出す／かくす</dt><dd>A〜D や ○× の問題で、選択肢の表示を切りかえます。まず自由に考えさせ、途中から選択肢を出すときに使います。</dd>
-          <dt>こたえ</dt><dd>正解の選択肢が光り、ほかはうすくなります。答えの説明や画像を入れていれば、あわせて表示されます。</dd>
-          <dt>選択肢をタップ</dt><dd>子どもの答えに「えらんだ」の印をつけられます。もう一度タップで外れます。</dd>
+          <dt>こたえ</dt><dd>正解の選択肢が少し大きくなり、ほかはうすくなります。「えらんだ」印の選択肢が正解だったときは、紙ふぶきも出ます。答えの説明や画像を入れていれば、あわせて表示されます。</dd>
+          <dt>選択肢をタップ</dt><dd>出た答えに「えらんだ」の印をつけられます。もう一度タップで外れます。</dd>
           <dt>おわる</dt><dd>まちがえて押しても大丈夫なように、2 回押すと終わります。</dd>
         </dl>
       </section>
@@ -424,17 +438,17 @@ textarea:focus,.tin:focus,.etitle:focus,.stepper input:focus{outline:3px solid v
             <dt>おなか</dt><dd>操作ボタンを出す・かくす</dd>
           </dl>
         </div>
-        <p>出題画面の左下のふくろうに、見えないボタンが仕込んであります。押しても見た目は変わらないので、画面に映っていても子どもに気づかれずに操作できます。操作ボタンをかくしておけば、画面に映るのは問題とふくろうだけになります。</p>
+        <p>出題画面の左下のふくろうに、見えないボタンが仕込んであります。押しても見た目は変わらないので、画面に映っていても、見ている人に気づかれずに操作できます。操作ボタンをかくしておけば、画面に映るのは問題とふくろうだけになります。</p>
         <p>○× の出しかたは全体の設定で選べます。</p>
         <ul>
           <li><b>大きく画面に</b>：画面いっぱいに ○ か × が出ます。</li>
           <li><b>えらんだ選択肢に</b>：タップで選んだ選択肢に ○× がつきます。選んでいないときの ○ は正解の選択肢につきます。</li>
-          <li><b>こたえを光らせる</b>：○ で正解の選択肢が光り、ほかはうすくなります。× で選んだ選択肢がゆれてうすくなります。○× クイズは、最初からこの方式です。</li>
+          <li><b>こたえを光らせる</b>：○ で正解の選択肢が光って紙ふぶきが出て、ほかはうすくなります。× で選んだ選択肢がゆれてうすくなります。正解でない選択肢に「えらんだ」印がついたまま ○ を押したときは、紙ふぶきは出さずに答えだけを見せます。○× クイズは、最初からこの方式です。</li>
         </ul>
       </section>
 
       <section class="gsec">
-        <h3><span class="gn">5</span>キーボード（PC で試すとき）</h3>
+        <h3><span class="gn">5</span>キーボード（PC や、キーボードをつないだ iPad で）</h3>
         <ul class="gkeys">
           <li><span class="kbd">スペース</span> スタート・とめる</li>
           <li><span class="kbd">H</span> ヒント</li>
@@ -448,7 +462,7 @@ textarea:focus,.tin:focus,.etitle:focus,.stepper input:focus{outline:3px solid v
 
       <section class="gsec">
         <h3><span class="gn">6</span>データの保存について</h3>
-        <p>クイズと画像は、使っているブラウザの中だけに保存されます。インターネット上には送られないので、子どもや人物の写真も使えます。</p>
+        <p>クイズと画像は、使っているブラウザの中だけに保存されます。インターネット上には送られないので、人物の写真も使えます。</p>
         <p>そのかわり、ブラウザのデータを消したり、プライベートブラウズで開いたりすると消えてしまいます。作ったクイズは「ファイルにする」で保存しておくと安心です。</p>
       </section>
     </div>
@@ -727,7 +741,7 @@ async function importFiles(files){
 
 /* ===== つくる ===== */
 const E={quiz:null,qi:0,saveT:null,pending:null,lastSlot:null};
-function openEditor(z){E.quiz=z;E.qi=z.questions.length?0:-1;show('editor');$('#eTitle').value=z.title||'';renderList();renderForm();setStatus('');}
+function openEditor(z){$('#fPanel').hidden=true;F.el=null;E.quiz=z;E.qi=z.questions.length?0:-1;show('editor');$('#eTitle').value=z.title||'';renderList();renderForm();setStatus('');}
 function setStatus(t){$('#eStatus').textContent=t;}
 function touch(){
   E.quiz.updated=Date.now();E.quiz.sample=false;
@@ -755,8 +769,9 @@ function stepper(path,val,min,max,step,unit){
     <input type="number" inputmode="numeric" value="${val}" min="${min}" max="${max}" aria-label="かず">
     <button type="button" class="btn sq" data-d="1" aria-label="ふやす">△</button></span>${unit?`<span class="unit">${unit}</span>`:''}</span>`;
 }
+function rp(val){const has=/《/.test(val||'');return `<div class="rprev" ${has?'':'hidden'}>${has?fmt(val):''}</div>`;}
 function imgSlot(path,val){
-  return `<div class="imgwrap"><div class="imgslot ${val?'has':''}" tabindex="0" role="button" data-img="${path}">${val?`<img src="${esc(val)}" alt="">`:`<span>${R('画像','がぞう')}を えらぶ<br>ドロップ・<br>Ctrl+Vでも できるよ</span>`}</div>
+  return `<div class="imgwrap"><div class="imgslot ${val?'has':''}" tabindex="0" role="button" data-img="${path}">${val?`<img src="${esc(val)}" alt="">`:`<span>${R('画像','がぞう')}を えらぶ<br><small>タップ・ドロップ・はりつけ</small></span>`}</div>
     ${val?`<button type="button" class="btn sm" data-imgdel="${path}">${R('画像','がぞう')}を とる</button>`:''}</div>`;
 }
 function renderForm(){
@@ -791,7 +806,7 @@ function renderForm(){
   const choiceRows=isC?q.choices.slice(0,q.choiceCount).map((c,k)=>`
     <div class="crowe ${q.correct===k?'isc':''}">
       <span class="clet" style="background:var(--c${ABCD[k]})">${ABCD[k]}</span>
-      <div class="cin"><input class="tin" type="text" data-f="choices.${k}.text" value="${esc(c.text)}" placeholder="${ABCD[k]}の ことば（なくても いいよ）">${imgSlot(`choices.${k}.image`,c.image)}</div>
+      <div class="cin"><input class="tin" type="text" data-f="choices.${k}.text" value="${esc(c.text)}" placeholder="${ABCD[k]}の ことば（なくても いいよ）">${rp(c.text)}${imgSlot(`choices.${k}.image`,c.image)}</div>
       <button type="button" class="cok ${q.correct===k?'on':''}" data-act="set-correct" data-k="${k}">${q.correct===k?'✓ ':''}${R('正解','せいかい')}</button>
     </div>`).join(''):'';
   f.innerHTML=`
@@ -802,8 +817,8 @@ function renderForm(){
     <button class="btn sm warn" data-act="q-del">この ${R('問題','もんだい')}を ${R('消','け')}す</button></div>
   <section class="fsec">
     <h3>${R('問題','もんだい')}</h3>
-    <div class="frow"><span class="lab">${R('問題文','もんだいぶん')}</span><textarea data-f="text" placeholder="れい：この ${R('人','ひと')}の しごとは なにかな？">${esc(q.text)}</textarea>
-      <span class="note">ふりがな：${R('漢字','かんじ')}《かんじ》と ${R('書','か')}くよ</span></div>
+    <div class="frow"><span class="lab">${R('問題文','もんだいぶん')}</span><textarea data-f="text" placeholder="れい：この ${R('人','ひと')}の しごとは なにかな？">${esc(q.text)}</textarea>${rp(q.text)}
+      <span class="note">ふりがな：ことばを えらんで、うえの「ふりがな」ボタンを おしてね</span></div>
     <div class="frow"><span class="lab">${R('問題','もんだい')}の ${R('画像','がぞう')}</span>${imgSlot('image',q.image)}</div>
     ${q.image?`<div class="frow"><span class="lab">${R('画像','がぞう')}の ${R('見','み')}せかた</span>${seg('reveal',q.reveal,[['none','ふつう'],['tiles','パネルを めくる'],['blur','ぼかしが とれる'],['zoom','アップから ひいていく']])}</div>
       ${q.reveal==='tiles'?`<div class="frow"><span class="lab">パネルの かず</span>${seg('tiles',q.tiles,[['4','4まい'],['9','9まい'],['16','16まい']])}<span class="note">めくる じゅんばんは ばらばらに なるよ</span></div>`:''}
@@ -826,7 +841,7 @@ function renderForm(){
   </section>
   <section class="fsec">
     <h3>こたえ${isL?'の せつめい（なくても いいよ）':''}</h3>
-    <div class="frow"><input class="tin" type="text" data-f="answerText" value="${esc(q.answerText)}" placeholder="${isL?'れい：あかくて まるい くだものだね':'れい：けいさつかん'}"></div>
+    <div class="frow"><input class="tin" type="text" data-f="answerText" value="${esc(q.answerText)}" placeholder="${isL?'れい：あかくて まるい くだものだね':'れい：けいさつかん'}">${rp(q.answerText)}</div>
     <div class="frow"><span class="lab">こたえの ${R('画像','がぞう')}</span>${imgSlot('answerImage',q.answerImage)}</div>
     ${isL?`<span class="note">「こたえ」を おすと、${R('正解','せいかい')}の ${R('選択肢','せんたくし')}が ひかるよ。せつめいが あれば いっしょに ${R('出','で')}るよ。</span>`:''}
   </section>
@@ -842,7 +857,7 @@ function renderForm(){
         <button class="btn sm sq" data-act="hint-up" data-k="${k}" aria-label="うえへ" ${k===0?'disabled':''}>↑</button>
         <button class="btn sm sq" data-act="hint-down" data-k="${k}" aria-label="したへ" ${k===q.hints.length-1?'disabled':''}>↓</button>
         <button class="btn sm warn" data-act="hint-del" data-k="${k}">${R('消','け')}す</button></div>
-        <textarea data-f="hints.${k}.text" placeholder="れい：${R('白','しろ')}と ${R('黒','くろ')}の ${R('車','くるま')}に のるよ" style="min-height:60px">${esc(h.text)}</textarea>
+        <textarea data-f="hints.${k}.text" placeholder="れい：${R('白','しろ')}と ${R('黒','くろ')}の ${R('車','くるま')}に のるよ" style="min-height:60px">${esc(h.text)}</textarea>${rp(h.text)}
         ${imgSlot(`hints.${k}.image`,h.image)}
         <div class="frow"><span class="lab">${R('出','だ')}しかた</span>${seg(`hints.${k}.mode`,h.mode,[['button','ボタンだけ'],['time',`${R('時間','じかん')}が たったら ${R('自動','じどう')}で`]])}
           ${h.mode==='time'?stepper(`hints.${k}.at`,h.at,1,600,1,'秒たったら'):''}</div>
@@ -864,6 +879,7 @@ const eForm=$('#eForm');
 eForm.addEventListener('input',e=>{
   const el=e.target;if(!el.dataset||!el.dataset.f)return;
   setPath(curObj(),el.dataset.f,el.value);touch();
+  const pv=el.nextElementSibling;if(pv&&pv.classList.contains('rprev')){const has=/《/.test(el.value);pv.hidden=!has;pv.innerHTML=has?fmt(el.value):'';}
   if(el.dataset.f==='text')renderList();
 });
 eForm.addEventListener('change',e=>{const st=e.target.closest('.stepper');if(st&&e.target.tagName==='INPUT')stepSet(st,Number(e.target.value));});
@@ -901,6 +917,28 @@ document.addEventListener('paste',e=>{
 $('#imgInput').addEventListener('change',e=>{const f=e.target.files&&e.target.files[0];if(f&&E.pending)setImg(E.pending.obj,E.pending.path,f);});
 $('#jsonInput').addEventListener('change',e=>{const fs=[...(e.target.files||[])];e.target.value='';if(fs.length)importFiles(fs);});
 $('#eTitle').addEventListener('input',e=>{E.quiz.title=e.target.value;touch();});
+/* ふりがな：えらんだ ことばに ｜ことば《よみ》 を つける */
+const F={el:null,s:0,e:0};
+function furiTrack(){const a=document.activeElement;if(a&&a.dataset&&a.dataset.f&&/\.?text$|answerText/.test(a.dataset.f)){F.el=a;F.s=a.selectionStart;F.e=a.selectionEnd;}}
+document.addEventListener('selectionchange',furiTrack);
+eForm.addEventListener('keyup',furiTrack);eForm.addEventListener('mouseup',furiTrack);eForm.addEventListener('touchend',()=>setTimeout(furiTrack,0));
+function furiOpen(){
+  const el=F.el;
+  if(!el||!el.isConnected||F.e<=F.s){toast('ふりがなを つけたい ことばを えらんでから おしてね');return;}
+  const w=el.value.slice(F.s,F.e);
+  if(/[《》｜|\n]/.test(w)){toast('えらんだ ところに ふりがなの きごうが はいっているよ');return;}
+  $('#fWord').textContent=w;$('#fYomi').value='';$('#fPanel').hidden=false;$('#fYomi').focus();
+}
+function furiApply(){
+  const el=F.el,y=$('#fYomi').value.trim();
+  if(!y){toast('よみを いれてね');return;}
+  if(!el||!el.isConnected){$('#fPanel').hidden=true;return;}
+  const v=el.value,w=v.slice(F.s,F.e);
+  el.value=v.slice(0,F.s)+'｜'+w+'《'+y+'》'+v.slice(F.e);
+  el.dispatchEvent(new Event('input',{bubbles:true}));
+  $('#fPanel').hidden=true;F.e=F.s;toast('ふりがなを つけたよ');
+}
+$('#fYomi').addEventListener('keydown',e=>{if(e.key==='Enter'&&!e.isComposing){e.preventDefault();furiApply();}});
 
 /* 2回おしで確定するボタン */
 function twoStep(btn,msg){
@@ -954,7 +992,6 @@ function renderPlay(){
 function hasTimeWork(){const q=P.q;if(!q)return false;return P.limit>0||q.hints.some(h=>h.mode==='time')||(isCL(q)&&q.choicesShow==='time')||(!!P.rv&&q.rvMode==='time');}
 /* ===== 画像を少しずつ見せる ===== */
 const BLUR=[0.075,0.045,0.026,0.013,0.005,0],ZOOM=[6,4,2.6,1.75,1.25,1];
-const TILE_COL=['#2462C8','#D24A3D','#C98F06','#22905A'];
 let rvRO=null;
 function rvInit(){
   P.rv=null;if(rvRO){rvRO.disconnect();rvRO=null;}
@@ -966,7 +1003,7 @@ function rvInit(){
   if(q.reveal==='tiles'){
     const side=Math.round(Math.sqrt(n));
     let h=`<div class="tiles" style="grid-template-columns:repeat(${side},1fr);grid-template-rows:repeat(${side},1fr)">`;
-    for(let i=0;i<n;i++){const r=Math.floor(i/side),c=i%side;h+=`<div class="tile" data-t="${i}" style="--tl:${TILE_COL[(r+c)%2===0?(r%2?2:0):(c%2?1:3)]}">${i+1}</div>`;}
+    for(let i=0;i<n;i++){h+=`<div class="tile" data-t="${i}">${i+1}</div>`;}
     box.insertAdjacentHTML('beforeend',h+'</div>');
   }
   if(q.reveal==='zoom')img.style.transformOrigin=`${q.zoomX}% ${q.zoomY}%`;
@@ -1079,7 +1116,8 @@ function toggleAnswer(quiet){
   P.answerShown=!P.answerShown;P.fx=false;
   if(P.answerShown){P.running=false;rvAll();if(isCL(q)&&!P.choicesShown){P.choicesShown=true;renderChoices();}if(!quiet)SND.play(S.ans);}
   const chip=$('#pChip');
-  if(isCL(q)){chip.hidden=!P.answerShown;chip.textContent=`こたえ ${corrLabel(q)}`;applyChoiceState();if(P.answerShown)sparkle();}
+  if(isCL(q)){chip.hidden=!P.answerShown;chip.textContent=`こたえ ${corrLabel(q)}`;if(P.answerShown&&P.selected>=0&&P.selected!==q.correct)P.missK=P.selected;
+    applyChoiceState();if(P.answerShown&&P.selected===q.correct)sparkle();}
   const a=$('#pAns');
   if(P.answerShown&&(plain(q.answerText)||q.answerImage)){
     a.hidden=false;
@@ -1104,8 +1142,11 @@ function mark(kind){
   playOX(kind);
   if(fxMode()){
     if(kind==='o'){
-      if(!P.answerShown)toggleAnswer(true);else sparkle();
-      P.fx=true;P.missK=-1;applyChoiceState();
+      /* 正解でない選択肢が「えらんだ」になっているときは、紙ふぶきを出さずに こたえだけ見せる */
+      const wrongSel=P.selected>=0&&P.selected!==P.q.correct;
+      if(!P.answerShown)toggleAnswer(true);
+      if(wrongSel){P.missK=P.selected;P.fx=false;applyChoiceState();}
+      else{P.fx=true;P.missK=-1;applyChoiceState();sparkle();}
     }else{
       if(!P.choicesShown){P.choicesShown=true;renderChoices();renderBar();}
       const k=P.selected;
@@ -1181,6 +1222,9 @@ document.addEventListener('click',async e=>{
   const act=a.dataset.act,id=a.dataset.id;
   switch(act){
     case 'home-new':{const z=normQuiz({title:'あたらしい クイズ',settings:Object.assign({},DEF_SET),questions:[newQ()]});await DB.put(z);openEditor(z);break;}
+    case 'furi-open':furiOpen();break;
+    case 'furi-apply':furiApply();break;
+    case 'furi-cancel':$('#fPanel').hidden=true;break;
     case 'guide-open':openGuide();break;
     case 'guide-close':closeGuide();break;
     case 'home-import':$('#jsonInput').click();break;
