@@ -416,7 +416,7 @@ textarea:focus,.tin:focus,.etitle:focus,.stepper input:focus{outline:3px solid v
       <section class="gsec">
         <h3><span class="gn">3</span>出題中の操作</h3>
         <dl class="gdl">
-          <dt>スタート／とめる</dt><dd>タイマーを動かします。設定で「問題を出したらすぐ」動くようにもできます。</dd>
+          <dt>スタート／とめる</dt><dd>タイマーをとめたり、また動かしたりします。最初は問題を出すとすぐに動きます。全体の設定で「スタートを押したら」動くようにも変えられます。</dd>
           <dt>ヒント</dt><dd>上から順に 1 つずつ出ます。</dd>
           <dt>画像をめくる</dt><dd>画像を少しずつ見せる問題で、次の段階に進めます。</dd>
           <dt>選択肢を出す／かくす</dt><dd>A〜D や ○× の問題で、選択肢の表示を切りかえます。まず自由に考えさせ、途中から選択肢を出すときに使います。</dd>
@@ -625,9 +625,9 @@ function readImage(file){
 }
 
 /* ===== データの形 ===== */
-const DEF_SET={time:30,timerStyle:'pie',autoStart:false,markStyle:'big',markHold:3,oxMarkStyle:'effect',sound:true,oxSound:'quiz',hideBar:false};
+const DEF_SET={time:30,timerStyle:'bar',autoStart:true,markStyle:'effect',markHold:3,oxMarkStyle:'effect',sound:true,oxSound:'quiz',hideBar:false};
 function newQ(){return{id:uid(),text:'',image:null,type:'choice',choiceCount:4,choices:[0,1,2,3].map(()=>({text:'',image:null})),correct:0,
-  choicesShow:'start',choicesAt:10,reveal:'none',tiles:9,zoomX:50,zoomY:50,rvMode:'button',rvEvery:5,answerText:'',answerImage:null,timeMode:'default',time:30,hints:[]};}
+  choicesShow:'start',choicesAt:10,reveal:'none',tiles:9,zoomX:50,zoomY:50,rvMode:'time',rvEvery:5,answerText:'',answerImage:null,timeMode:'default',time:30,hints:[]};}
 function normQ(q){
   const d=newQ();const o=Object.assign(d,q||{});
   if(!o.id)o.id=uid();
