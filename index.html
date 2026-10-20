@@ -19,7 +19,7 @@
   --hint:#E0AE33; --hint-soft:#FFF6DB; --hint-ink:#835800;
   --timer:#E04A3C;
   --maru:#D8402F; --batsu:#2462C8;
-  --star:#F2B632; --star-ink:#B07800; --cloud:#C9D3E0;
+  --spark:#F2B632;
   --owl:#A87A52; --owl-dark:#8C6341; --owl-belly:#F3E3C6; --beak:#E8963A;
   --font:"BIZ UDPGothic","Hiragino Sans","Hiragino Kaku Gothic ProN","Yu Gothic",Meiryo,sans-serif;
   color-scheme:light;
@@ -187,14 +187,26 @@ textarea:focus,.tin:focus,.etitle:focus,.stepper input:focus{outline:3px solid v
 .pbody.has-hints .choices.n4 .cl,.pbody.has-hints .choices.n3 .cl{font-size:clamp(16px,3.4vmin,46px)}
 .pbody.has-hints .choices .crow{gap:1vmin}
 .choice.sel{box-shadow:0 0 0 .9vmin var(--ink)}
-.choice.correct{background:var(--ok-soft);box-shadow:0 0 0 1.1vmin var(--ok)}
-.choice.dim{opacity:.3}
+.choice.correct{background:var(--ok-soft);box-shadow:0 0 0 1.1vmin var(--ok);z-index:3}
+.choice.dim{opacity:.22;filter:grayscale(.7)}
+.choice.dim,.choice.miss{transition:opacity .6s,filter .6s}
+.choice.fxon{animation:win 1.1s ease-out}
+.choice.miss{opacity:.4;filter:grayscale(.6);animation:shake .5s ease-in-out}
+.choices.shake .choice{animation:shake .5s ease-in-out}
+.fx{position:absolute;inset:0;pointer-events:none;overflow:visible;z-index:4}
+.fx .ring{position:absolute;inset:-1vmin;border-radius:2.4vmin;border:1vmin solid var(--spark);animation:ring 1s ease-out forwards}
+.fx i{position:absolute;left:50%;top:50%;width:2.4vmin;height:2.4vmin;margin:-1.2vmin;background:var(--spark);transform:rotate(45deg) scale(.2);opacity:0;
+  animation:spark 1s cubic-bezier(.2,.7,.3,1) forwards;animation-delay:var(--d)}
+.fx i:nth-child(3n){background:var(--ok)} .fx i:nth-child(4n){background:#fff;box-shadow:0 0 0 .3vmin var(--spark)}
+@keyframes win{0%{transform:scale(1)}25%{transform:scale(1.07)}50%{transform:scale(.98)}75%{transform:scale(1.03)}100%{transform:scale(1)}}
+@keyframes ring{0%{opacity:1;transform:scale(.96)}100%{opacity:0;transform:scale(1.18)}}
+@keyframes spark{0%{opacity:1;transform:translate(0,0) rotate(45deg) scale(.4)}70%{opacity:1}100%{opacity:0;transform:translate(var(--x),var(--y)) rotate(225deg) scale(1)}}
+@keyframes shake{0%,100%{transform:translateX(0)}20%{transform:translateX(-1.2vmin)}40%{transform:translateX(1.2vmin)}60%{transform:translateX(-.8vmin)}80%{transform:translateX(.6vmin)}}
 .ctag{position:absolute;top:-1.6vmin;right:1.4vmin;background:var(--ink);color:#fff;font-size:clamp(13px,2.4vmin,28px);font-weight:700;border-radius:8px;padding:0 .5em}
 .choice.correct .ctag{background:var(--ok)}
 .cmark{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;gap:1vmin;background:rgba(255,255,255,.88);border-radius:1.4vmin;animation:pop .3s ease-out;pointer-events:none;overflow:hidden}
 .cmark svg{width:clamp(44px,10vmin,130px);height:clamp(44px,10vmin,130px);flex:none}
 .ctag.mo{background:var(--maru)!important} .ctag.mx{background:var(--batsu)!important}
-.ctag.ms{background:var(--star-ink)!important} .ctag.mc{background:var(--sub)!important}
 .choice .ctag{z-index:2}
 .cmark b{font-size:clamp(15px,3.2vmin,44px);white-space:nowrap}
 .choice.ox .cmark{background:transparent;justify-content:flex-end;padding-right:3vmin}
@@ -228,7 +240,6 @@ textarea:focus,.tin:focus,.etitle:focus,.stepper input:focus{outline:3px solid v
 .markov svg{width:52vmin;height:52vmin;animation:pop .35s ease-out}
 .markov b{font-size:clamp(30px,9vmin,130px);line-height:1.1}
 .markov.o b{color:var(--maru)} .markov.x b{color:var(--batsu)}
-.markov.s b{color:var(--star-ink)} .markov.c b{color:var(--sub)}
 #toast{position:fixed;left:50%;bottom:max(24px,env(safe-area-inset-bottom,0px));transform:translateX(-50%);z-index:100;background:var(--ink);color:#fff;
   padding:12px 20px;border-radius:12px;font-weight:700;max-width:calc(100% - 32px);text-align:center;animation:fade .2s}
 @keyframes pop{0%{transform:scale(.85);opacity:0}100%{transform:scale(1);opacity:1}}
@@ -514,7 +525,7 @@ function readImage(file){
 }
 
 /* ===== データの形 ===== */
-const DEF_SET={time:30,timerStyle:'pie',autoStart:false,markStyle:'big',markHold:3,sound:true,oxSound:'quiz',hideBar:false};
+const DEF_SET={time:30,timerStyle:'pie',autoStart:false,markStyle:'big',markHold:3,oxMarkStyle:'effect',sound:true,oxSound:'quiz',hideBar:false};
 function newQ(){return{id:uid(),text:'',image:null,type:'choice',choiceCount:4,choices:[0,1,2,3].map(()=>({text:'',image:null})),correct:0,
   choicesShow:'start',choicesAt:10,answerText:'',answerImage:null,timeMode:'default',time:30,hints:[]};}
 function normQ(q){
@@ -671,8 +682,11 @@ function renderForm(){
       <div class="frow"><span class="lab">タイマーが うごきだすとき</span>${seg('autoStart',s.autoStart,[['false','スタートを おしたら'],['true',`${R('問題','もんだい')}を ${R('出','だ')}したら すぐ`]])}</div>
     </section>
     <section class="fsec">
-      <div class="frow"><span class="lab">○×の ${R('出','だ')}しかた</span>${seg('markStyle',s.markStyle,[['big',`${R('大','おお')}きく ${R('画面','がめん')}に`],['glow',`えらんだ ${R('選択肢','せんたくし')}に`]])}
-        <span class="note">「えらんだ ${R('選択肢','せんたくし')}に」は、${R('出題','しゅつだい')}${R('中','ちゅう')}に ${R('選択肢','せんたくし')}を タップして えらんでから ○× を ${R('出','だ')}すと、その ${R('選択肢','せんたくし')}に つくよ。えらんでいない ときの ○ は、${R('正解','せいかい')}の ${R('選択肢','せんたくし')}に つくよ（${R('意見','いけん')}が わかれた ときなど）。○× クイズでは、○×の ${R('記号','きごう')}と まぎれないように、せいかいは ★、おしいは くもの ${R('形','かたち')}で ${R('出','で')}るよ。${R('選択肢','せんたくし')}の ない ${R('問題','もんだい')}では ${R('大','おお')}きく ${R('出','で')}るよ。</span></div>
+      <div class="frow"><span class="lab">A〜D ${R('問題','もんだい')}で ○×を ${R('出','だ')}すとき</span>${seg('markStyle',s.markStyle,[['big',`${R('大','おお')}きく ${R('画面','がめん')}に`],['glow',`えらんだ ${R('選択肢','せんたくし')}に`],['effect',`こたえを ${R('光','ひか')}らせる`]])}
+        <span class="note">「えらんだ ${R('選択肢','せんたくし')}に」：${R('選択肢','せんたくし')}を タップして えらんでから ○× を ${R('出','だ')}すと、その ${R('選択肢','せんたくし')}に ○× が つくよ。えらんでいない ときの ○ は ${R('正解','せいかい')}に つくよ。</span>
+        <span class="note">「こたえを ${R('光','ひか')}らせる」：○ で ${R('正解','せいかい')}の ${R('選択肢','せんたくし')}が ${R('光','ひか')}って、ほかは うすく なるよ。× は えらんだ ${R('選択肢','せんたくし')}が ゆれて うすく なるよ（えらんでいない ときは ぜんぶ ゆれるよ）。</span>
+        <span class="note">${R('選択肢','せんたくし')}の ない ${R('問題','もんだい')}では、どれでも ${R('大','おお')}きく ${R('出','で')}るよ。</span></div>
+      <div class="frow"><span class="lab">○× クイズで ○×を ${R('出','だ')}すとき</span>${seg('oxMarkStyle',s.oxMarkStyle,[['effect',`こたえを ${R('光','ひか')}らせる`],['big',`${R('大','おお')}きく ${R('画面','がめん')}に`]])}</div>
       <div class="frow"><span class="lab">${R('大','おお')}きな ○× が ${R('消','き')}えるまで</span>${seg('markHold',s.markHold,[['2','2秒'],['3','3秒'],['5','5秒'],['0',`タップするまで`]])}</div>
       <div class="frow"><span class="lab">○×の ${R('音','おと')}</span><div class="stepwrap">${seg('oxSound',s.oxSound,[['quiz','ピンポン・ブー'],['soft',`やさしい ${R('音','おと')}`],['off','なし']])}
           <button type="button" class="btn sm" data-act="test-o">♪ ○</button><button type="button" class="btn sm" data-act="test-x">♪ ×</button></div></div>
@@ -808,7 +822,7 @@ function openPlay(z,start,returnTo){
 }
 function renderPlay(){
   const z=P.quiz,qs=z.questions;
-  P.elapsed=0;P.running=false;P.timeupDone=false;P.revealed=new Set();P.selected=-1;P.answerShown=false;P.cardMark=null;P.lastSec=-1;
+  P.elapsed=0;P.running=false;P.timeupDone=false;P.fx=false;P.missK=-1;P.revealed=new Set();P.selected=-1;P.answerShown=false;P.cardMark=null;P.lastSec=-1;
   hideMark();$('#pChip').hidden=true;$('#pTup').hidden=true;
   const body=$('#pBody');
   if(P.i<0||P.i>=qs.length){
@@ -856,23 +870,18 @@ const MARK_SVG={
   x:`<svg viewBox="0 0 100 100" aria-hidden="true"><path d="M20 20 L80 80 M80 20 L20 80" stroke="var(--batsu)" stroke-width="12" stroke-linecap="round" fill="none"/></svg>`
 };
 const MARK_TXT={o:'せいかい！',x:'おしい！'};
-/* ○×クイズでは ○×の記号と まぎれないように、せいかい＝★、おしい＝くも に する */
-const OX_FB={
-  o:`<svg viewBox="0 0 100 100" aria-hidden="true"><path d="M50 6 L62 37 L95 38 L69 58 L78 91 L50 72 L22 91 L31 58 L5 38 L38 37 Z" fill="var(--star)" stroke="#fff" stroke-width="3" stroke-linejoin="round"/></svg>`,
-  x:`<svg viewBox="0 0 100 100" aria-hidden="true"><path d="M26 74 Q8 74 10 58 Q12 44 28 46 Q30 26 50 26 Q68 26 72 42 Q90 40 91 58 Q92 74 74 74 Z" fill="var(--cloud)"/><circle cx="40" cy="58" r="4" fill="var(--sub)"/><circle cx="60" cy="58" r="4" fill="var(--sub)"/></svg>`
-};
-const isOXq=()=>!!P.q&&P.q.type==='ox';
-const fbSym=kind=>isOXq()?OX_FB[kind]:MARK_SVG[kind];
-const fbCls=kind=>isOXq()?(kind==='o'?'s':'c'):kind;
 function applyChoiceState(){
   $$('#pCh .choice').forEach(b=>{
     const k=+b.dataset.k,corr=P.answerShown&&k===P.q.correct;
     b.classList.toggle('sel',P.selected===k);b.classList.toggle('correct',corr);b.classList.toggle('dim',P.answerShown&&!corr);
     const cm=P.cardMark&&P.cardMark.k===k?P.cardMark.kind:'';
-    const tag=b.querySelector('.ctag');const t=cm?MARK_TXT[cm]:(corr?'こたえ':(P.selected===k?'えらんだ':''));tag.textContent=t;tag.hidden=!t;
-    const fc=cm?fbCls(cm):'';tag.classList.toggle('mo',fc==='o');tag.classList.toggle('mx',fc==='x');tag.classList.toggle('ms',fc==='s');tag.classList.toggle('mc',fc==='c');
+    const tag=b.querySelector('.ctag');const t=cm?MARK_TXT[cm]:(corr?(P.fx?'せいかい！':'こたえ'):(P.selected===k?'えらんだ':''));tag.textContent=t;tag.hidden=!t;
+    const miss=P.missK===k;
+    if(miss&&!cm&&!corr)tag.textContent='おしい！',tag.hidden=false;
+    tag.classList.toggle('mo',cm==='o');tag.classList.toggle('mx',cm==='x'||(miss&&!corr));
+    b.classList.toggle('miss',miss&&!corr);
     const m=b.querySelector('.cmark');
-    if(P.cardMark&&P.cardMark.k===k){m.hidden=false;m.className='cmark '+fbCls(P.cardMark.kind);m.innerHTML=fbSym(P.cardMark.kind);}
+    if(P.cardMark&&P.cardMark.k===k){m.hidden=false;m.className='cmark '+P.cardMark.kind;m.innerHTML=MARK_SVG[P.cardMark.kind];}
     else{m.hidden=true;m.innerHTML='';}
   });
 }
@@ -919,12 +928,12 @@ function revealHint(k){
 }
 function nextHint(){const q=P.q;if(!q)return;const k=q.hints.findIndex((h,i)=>!P.revealed.has(i));if(k>=0)revealHint(k);}
 function showChoices(){if(!P.q||P.choicesShown)return;P.choicesShown=true;renderChoices();SND.play(S.hint);renderBar();}
-function toggleAnswer(){
+function toggleAnswer(quiet){
   const q=P.q;if(!q)return;
-  P.answerShown=!P.answerShown;
-  if(P.answerShown){P.running=false;if(isCL(q)&&!P.choicesShown){P.choicesShown=true;renderChoices();}SND.play(S.ans);}
+  P.answerShown=!P.answerShown;P.fx=false;
+  if(P.answerShown){P.running=false;if(isCL(q)&&!P.choicesShown){P.choicesShown=true;renderChoices();}if(!quiet)SND.play(S.ans);}
   const chip=$('#pChip');
-  if(isCL(q)){chip.hidden=!P.answerShown;chip.textContent=`こたえ ${corrLabel(q)}`;applyChoiceState();}
+  if(isCL(q)){chip.hidden=!P.answerShown;chip.textContent=`こたえ ${corrLabel(q)}`;applyChoiceState();if(P.answerShown)sparkle();}
   const a=$('#pAns');
   if(P.answerShown&&(plain(q.answerText)||q.answerImage)){
     a.hidden=false;
@@ -932,16 +941,39 @@ function toggleAnswer(){
   }else{a.hidden=true;a.innerHTML='';}
   renderBar();
 }
+/* 正解のカードを光らせる */
+function sparkle(){
+  const c=$(`#pCh .choice[data-k="${P.q.correct}"]`);if(!c)return;
+  c.querySelectorAll('.fx').forEach(e=>e.remove());c.classList.remove('fxon');void c.offsetWidth;c.classList.add('fxon');
+  const fx=document.createElement('div');fx.className='fx';
+  let h='<div class="ring"></div>';const r=c.getBoundingClientRect();const R0=Math.max(r.width,r.height)*0.62;
+  for(let i=0;i<18;i++){const a=i/18*Math.PI*2+Math.random()*.3,d=R0*(0.8+Math.random()*.5);
+    h+=`<i style="--x:${(Math.cos(a)*d).toFixed(0)}px;--y:${(Math.sin(a)*d*.8).toFixed(0)}px;--d:${(Math.random()*.15).toFixed(2)}s"></i>`;}
+  fx.innerHTML=h;c.appendChild(fx);setTimeout(()=>fx.remove(),1400);
+}
+function fxMode(){const q=P.q;if(!isCL(q))return false;return q.type==='ox'?P.quiz.settings.oxMarkStyle!=='big':P.quiz.settings.markStyle==='effect';}
 function hasAnswer(){const q=P.q;return q&&(isCL(q)||plain(q.answerText)||q.answerImage);}
 function mark(kind){
   if(P.q)P.marks[P.i]=kind;
   playOX(kind);
+  if(fxMode()){
+    if(kind==='o'){
+      if(!P.answerShown)toggleAnswer(true);else sparkle();
+      P.fx=true;P.missK=-1;applyChoiceState();
+    }else{
+      if(!P.choicesShown){P.choicesShown=true;renderChoices();renderBar();}
+      const k=P.selected;
+      if(k>=0&&k!==P.q.correct){P.missK=k;applyChoiceState();}
+      else{const el=$('#pCh');el.classList.remove('shake');void el.offsetWidth;el.classList.add('shake');setTimeout(()=>el.classList.remove('shake'),600);}
+    }
+    return;
+  }
   if(P.quiz.settings.markStyle==='glow'&&isCL(P.q)&&P.choicesShown){
     /* えらんでいれば その選択肢に。えらんでいないときの○は 正解の選択肢に つける */
     const k=P.selected>=0?P.selected:(kind==='o'?P.q.correct:-1);
     if(k>=0){P.cardMark={k,kind};applyChoiceState();return;}
   }
-  const m=$('#pMark');m.className='markov '+fbCls(kind);m.innerHTML=fbSym(kind)+`<b>${MARK_TXT[kind]}</b>`;m.hidden=false;
+  const m=$('#pMark');m.className='markov '+kind;m.innerHTML=MARK_SVG[kind]+`<b>${MARK_TXT[kind]}</b>`;m.hidden=false;
   clearTimeout(P.markT);const hold=+P.quiz.settings.markHold;
   if(hold>0)P.markT=setTimeout(hideMark,hold*1000);
 }
@@ -974,7 +1006,7 @@ function renderBar(){
 }
 $('#pBody').addEventListener('click',e=>{
   const c=e.target.closest('.choice');if(!c||!P.q)return;
-  const k=+c.dataset.k;P.selected=(P.selected===k)?-1:k;P.cardMark=null;applyChoiceState();
+  const k=+c.dataset.k;P.selected=(P.selected===k)?-1:k;P.cardMark=null;P.missK=-1;applyChoiceState();
 });
 $('#pMark').addEventListener('click',hideMark);
 
