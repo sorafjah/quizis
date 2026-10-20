@@ -18,6 +18,7 @@
   --cA:#D24A3D; --cB:#2462C8; --cC:#C98F06; --cD:#22905A;
   --hint:#E0AE33; --hint-soft:#FFF6DB; --hint-ink:#835800;
   --timer:#E04A3C;
+  --maru:#D8402F; --batsu:#2462C8;
   --owl:#A87A52; --owl-dark:#8C6341; --owl-belly:#F3E3C6; --beak:#E8963A;
   --font:"BIZ UDPGothic","Hiragino Sans","Hiragino Kaku Gothic ProN","Yu Gothic",Meiryo,sans-serif;
   color-scheme:light;
@@ -56,7 +57,7 @@ button{font-family:var(--font);color:var(--ink)}
 .hwrap{max-width:1100px;margin:0 auto;display:grid;gap:22px;padding-block:8px 40px}
 .hhead{display:flex;flex-wrap:wrap;align-items:center;gap:14px;justify-content:space-between}
 .brand{display:flex;align-items:center;gap:12px}
-.brand .owl-mini{width:56px;height:56px}
+.brand .owl-mini{width:86px;height:56px}
 .brand h1{margin:0;font-size:30px;line-height:1.2}
 .brand p{margin:0;color:var(--sub);font-size:14px;letter-spacing:.08em}
 .hact{display:flex;flex-wrap:wrap;gap:10px}
@@ -79,7 +80,7 @@ button{font-family:var(--font);color:var(--ink)}
 .help li{margin:3px 0}
 .kbd{display:inline-block;min-width:1.8em;padding:0 .4em;border:1.5px solid var(--line);border-bottom-width:3px;border-radius:6px;text-align:center;font-size:.9em;background:var(--bg)}
 .owlmap{display:flex;gap:16px;align-items:center;flex-wrap:wrap}
-.owlmap .owl{width:150px;flex:none}
+.owlmap .owl{width:230px;flex:none}
 .owlmap dl{margin:0;display:grid;grid-template-columns:auto 1fr;gap:4px 10px;align-items:center}
 .owlmap dt{font-weight:700}
 .owlmap dd{margin:0}
@@ -177,6 +178,9 @@ textarea:focus,.tin:focus,.etitle:focus,.stepper input:focus{outline:3px solid v
 .crow{display:flex;align-items:center;gap:1.6vmin;min-width:0}
 .cl{flex:none;width:1.55em;height:1.55em;border-radius:50%;background:var(--cc);color:#fff;font-size:clamp(20px,4.4vmin,58px);font-weight:700;display:grid;place-items:center;line-height:1}
 .ct{min-width:0;font-size:clamp(18px,4.4vmin,62px);font-weight:700;line-height:1.35;overflow-wrap:anywhere}
+.choice.ox{align-items:center;min-height:16vmin}
+.oxsym{display:flex;justify-content:center}
+.oxsym svg{width:clamp(70px,17vmin,210px);height:auto}
 .choices.n2 .ct{font-size:clamp(20px,5.4vmin,74px)}
 .pbody.has-hints .choices.n4 .ct,.pbody.has-hints .choices.n3 .ct{font-size:clamp(16px,3.3vmin,46px)}
 .pbody.has-hints .choices.n4 .cl,.pbody.has-hints .choices.n3 .cl{font-size:clamp(16px,3.4vmin,46px)}
@@ -186,10 +190,13 @@ textarea:focus,.tin:focus,.etitle:focus,.stepper input:focus{outline:3px solid v
 .choice.dim{opacity:.3}
 .ctag{position:absolute;top:-1.6vmin;right:1.4vmin;background:var(--ink);color:#fff;font-size:clamp(13px,2.4vmin,28px);font-weight:700;border-radius:8px;padding:0 .5em}
 .choice.correct .ctag{background:var(--ok)}
-.cmark{position:absolute;inset:0;display:grid;place-items:center;align-content:center;background:rgba(255,255,255,.62);border-radius:1.4vmin;animation:pop .3s ease-out;pointer-events:none}
-.cmark svg{width:min(70%,24vmin);height:auto;max-height:70%}
-.cmark b{font-size:clamp(18px,4vmin,52px)}
-.cmark.o b{color:var(--ok)} .cmark.x b{color:var(--ng)}
+.cmark{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;gap:1vmin;background:rgba(255,255,255,.88);border-radius:1.4vmin;animation:pop .3s ease-out;pointer-events:none;overflow:hidden}
+.cmark svg{width:clamp(44px,10vmin,130px);height:clamp(44px,10vmin,130px);flex:none}
+.ctag.mo{background:var(--maru)!important} .ctag.mx{background:var(--batsu)!important}
+.choice .ctag{z-index:2}
+.cmark b{font-size:clamp(15px,3.2vmin,44px);white-space:nowrap}
+.choice.ox .cmark svg{width:clamp(50px,12vmin,160px);height:clamp(50px,12vmin,160px)}
+.cmark.o b{color:var(--maru)} .cmark.x b{color:var(--batsu)}
 .hints{display:flex;flex-direction:column;gap:1.6vmin;min-height:0}
 .hint{background:var(--hint-soft);border:3px solid var(--hint);border-radius:1.8vmin;padding:1.2vmin 1.8vmin;display:grid;gap:.8vmin;animation:pop .4s ease-out}
 .hint.ph{background:transparent;border-style:dashed;border-color:var(--line);grid-template-columns:auto 1fr;align-items:center;animation:none}
@@ -202,12 +209,13 @@ textarea:focus,.tin:focus,.etitle:focus,.stepper input:focus{outline:3px solid v
 .ititle{font-size:clamp(30px,8.4vmin,120px);font-weight:700;line-height:1.4;text-wrap:balance}
 .isub{font-size:clamp(20px,4.4vmin,60px);font-weight:700;color:var(--sub)}
 .pf{display:flex;align-items:flex-end;gap:2vmin;position:relative;z-index:40}
-.owl{position:relative;width:clamp(124px,15vmin,170px);aspect-ratio:1;flex:none}
+.owl{position:relative;width:clamp(200px,24vmin,270px);aspect-ratio:200/130;flex:none}
 .owl svg{width:100%;height:100%;display:block}
 .owl .pupils{transform-box:fill-box;transform-origin:center;animation:blink 6.5s infinite}
-.oz{position:absolute;border:0;background:transparent;padding:0;cursor:pointer;border-radius:50%;width:30%;height:30%}
-.oz.l{left:20%;top:27%} .oz.r{left:50%;top:27%} .oz.b{left:28%;top:57%;width:44%;height:30%;border-radius:40%}
-.owlmap .oz{background:rgba(36,98,200,.18);border:2px solid var(--accent);color:var(--accent);font-weight:700;font-size:15px;display:grid;place-items:center;cursor:default}
+.oz{position:absolute;border:0;background:transparent;padding:0;cursor:pointer;border-radius:12%}
+.oz.o{left:1%;top:1%;width:30%;height:50%} .oz.x{left:69%;top:1%;width:30%;height:50%}
+.oz.h{left:37%;top:18%;width:26%;height:36%;border-radius:50%} .oz.b{left:38%;top:61%;width:24%;height:30%;border-radius:45%}
+.owlmap .oz{background:rgba(31,43,59,.12);border:2px dashed var(--ink);color:var(--ink);font-weight:700;font-size:13px;display:grid;place-items:center;cursor:default;line-height:1.2}
 .bar{flex:1;display:flex;justify-content:flex-end;align-items:center;flex-wrap:wrap;gap:1.2vmin;min-width:0}
 .bar.hide{visibility:hidden}
 .bar .btn{min-height:clamp(52px,7vmin,72px);font-size:clamp(16px,2.4vmin,26px);padding:0 clamp(14px,2vmin,26px)}
@@ -216,7 +224,7 @@ textarea:focus,.tin:focus,.etitle:focus,.stepper input:focus{outline:3px solid v
 .markov{position:absolute;inset:0;z-index:30;display:grid;place-items:center;align-content:center;gap:1vmin;background:rgba(242,245,250,.6);animation:fade .2s}
 .markov svg{width:52vmin;height:52vmin;animation:pop .35s ease-out}
 .markov b{font-size:clamp(30px,9vmin,130px);line-height:1.1}
-.markov.o b{color:var(--ok)} .markov.x b{color:var(--ng)}
+.markov.o b{color:var(--maru)} .markov.x b{color:var(--batsu)}
 #toast{position:fixed;left:50%;bottom:max(24px,env(safe-area-inset-bottom,0px));transform:translateX(-50%);z-index:100;background:var(--ink);color:#fff;
   padding:12px 20px;border-radius:12px;font-weight:700;max-width:calc(100% - 32px);text-align:center;animation:fade .2s}
 @keyframes pop{0%{transform:scale(.85);opacity:0}100%{transform:scale(1);opacity:1}}
@@ -250,7 +258,7 @@ textarea:focus,.tin:focus,.etitle:focus,.stepper input:focus{outline:3px solid v
   <div class="hwrap">
     <header class="hhead">
       <div class="brand">
-        <svg class="owl-mini" viewBox="0 0 120 120" aria-hidden="true"><use href="#owlArt"/></svg>
+        <svg class="owl-mini" viewBox="0 0 200 130" aria-hidden="true"><use href="#owlArt"/></svg>
         <div><h1>クイズ</h1><p>quizis</p></div>
       </div>
       <div class="hact">
@@ -276,15 +284,16 @@ textarea:focus,.tin:focus,.etitle:focus,.stepper input:focus{outline:3px solid v
         <div>
           <h3>ふくろうの かくしボタン</h3>
           <div class="owlmap">
-            <div class="owl"><svg viewBox="0 0 120 120" aria-hidden="true"><use href="#owlArt"/></svg>
-              <span class="oz l">○</span><span class="oz r">×</span><span class="oz b">ボタン</span></div>
+            <div class="owl"><svg viewBox="0 0 200 130" aria-hidden="true"><use href="#owlArt"/></svg>
+              <span class="oz o">○</span><span class="oz x">×</span><span class="oz h">こたえ</span><span class="oz b">ボタン</span></div>
             <dl>
-              <dt>むかって <ruby>左<rt>ひだり</rt></ruby>の <ruby>目<rt>め</rt></ruby></dt><dd>○ を <ruby>出<rt>だ</rt></ruby>す</dd>
-              <dt>むかって <ruby>右<rt>みぎ</rt></ruby>の <ruby>目<rt>め</rt></ruby></dt><dd>× を <ruby>出<rt>だ</rt></ruby>す</dd>
+              <dt>○の <ruby>札<rt>ふだ</rt></ruby></dt><dd>○ を <ruby>出<rt>だ</rt></ruby>す</dd>
+              <dt>×の <ruby>札<rt>ふだ</rt></ruby></dt><dd>× を <ruby>出<rt>だ</rt></ruby>す</dd>
+              <dt>あたま</dt><dd>こたえを <ruby>出<rt>だ</rt></ruby>す・かくす</dd>
               <dt>おなか</dt><dd><ruby>操作<rt>そうさ</rt></ruby>ボタンを <ruby>出<rt>だ</rt></ruby>す・かくす</dd>
             </dl>
           </div>
-          <p class="note">1<ruby>回<rt>かい</rt></ruby> タップで <ruby>反応<rt>はんのう</rt></ruby>するよ。ふくろうの <ruby>見<rt>み</rt></ruby>た<ruby>目<rt>め</rt></ruby>は かわらないので、こっそり つかえるよ。</p>
+          <p class="note">1<ruby>回<rt>かい</rt></ruby> タップで <ruby>反応<rt>はんのう</rt></ruby>するよ。ふくろうの <ruby>見<rt>み</rt></ruby>た<ruby>目<rt>め</rt></ruby>は かわらないので、こっそり つかえるよ。<ruby>選択肢<rt>せんたくし</rt></ruby>を えらばなくても、あたまで こたえが <ruby>出<rt>で</rt></ruby>るよ。</p>
         </div>
         <div>
           <h3>ふりがなの つけかた</h3>
@@ -335,9 +344,10 @@ textarea:focus,.tin:focus,.etitle:focus,.stepper input:focus{outline:3px solid v
   <div class="pbody" id="pBody"></div>
   <footer class="pf">
     <div class="owl" id="pOwl">
-      <svg viewBox="0 0 120 120" aria-hidden="true"><use href="#owlArt"/></svg>
-      <button class="oz l" data-act="owl-o" aria-label="○"></button>
-      <button class="oz r" data-act="owl-x" aria-label="×"></button>
+      <svg viewBox="0 0 200 130" aria-hidden="true"><use href="#owlArt"/></svg>
+      <button class="oz o" data-act="owl-o" aria-label="○"></button>
+      <button class="oz x" data-act="owl-x" aria-label="×"></button>
+      <button class="oz h" data-act="owl-ans" aria-label="こたえ"></button>
       <button class="oz b" data-act="owl-bar" aria-label="ボタンを出す・かくす"></button>
     </div>
     <nav class="bar" id="pBar"></nav>
@@ -353,18 +363,24 @@ textarea:focus,.tin:focus,.etitle:focus,.stepper input:focus{outline:3px solid v
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
   <defs>
     <g id="owlArt">
-      <path d="M26 34 L33 10 L50 27 Z" fill="var(--owl-dark)"/>
-      <path d="M94 34 L87 10 L70 27 Z" fill="var(--owl-dark)"/>
-      <ellipse cx="60" cy="66" rx="42" ry="46" fill="var(--owl)"/>
-      <path d="M20 62 Q10 92 32 106 Q26 84 30 64 Z" fill="var(--owl-dark)"/>
-      <path d="M100 62 Q110 92 88 106 Q94 84 90 64 Z" fill="var(--owl-dark)"/>
-      <ellipse cx="60" cy="88" rx="25" ry="21" fill="var(--owl-belly)"/>
-      <text x="60" y="98" text-anchor="middle" font-size="26" font-weight="700" fill="var(--owl)" font-family="BIZ UDPGothic, sans-serif">?</text>
-      <circle cx="42" cy="49" r="15.5" fill="#fff"/>
-      <circle cx="78" cy="49" r="15.5" fill="#fff"/>
-      <g class="pupils"><circle cx="43" cy="50" r="6.8" fill="#1F2B3B"/><circle cx="79" cy="50" r="6.8" fill="#1F2B3B"/></g>
-      <path d="M54 60 L66 60 L60 71 Z" fill="var(--beak)"/>
-      <path d="M44 113 q4 -7 8 0 M68 113 q4 -7 8 0" stroke="var(--beak)" stroke-width="4" fill="none" stroke-linecap="round"/>
+      <path d="M34 56 L52 104" stroke="#9A7B55" stroke-width="5" stroke-linecap="round"/>
+      <path d="M166 56 L148 104" stroke="#9A7B55" stroke-width="5" stroke-linecap="round"/>
+      <rect x="6" y="4" width="56" height="56" rx="9" fill="#fff" stroke="#C9D1DC" stroke-width="3"/>
+      <circle cx="34" cy="32" r="17" fill="none" stroke="var(--maru)" stroke-width="7"/>
+      <rect x="138" y="4" width="56" height="56" rx="9" fill="#fff" stroke="#C9D1DC" stroke-width="3"/>
+      <path d="M152 18 L180 46 M180 18 L152 46" stroke="var(--batsu)" stroke-width="7" stroke-linecap="round"/>
+      <path d="M70 48 L76 24 L91 40 Z" fill="var(--owl-dark)"/>
+      <path d="M130 48 L124 24 L109 40 Z" fill="var(--owl-dark)"/>
+      <ellipse cx="100" cy="80" rx="36" ry="42" fill="var(--owl)"/>
+      <path d="M70 72 Q50 90 50 108 Q64 106 74 96 Z" fill="var(--owl-dark)"/>
+      <path d="M130 72 Q150 90 150 108 Q136 106 126 96 Z" fill="var(--owl-dark)"/>
+      <ellipse cx="100" cy="100" rx="21" ry="17" fill="var(--owl-belly)"/>
+      <text x="100" y="108" text-anchor="middle" font-size="22" font-weight="700" fill="var(--owl)" font-family="BIZ UDPGothic, sans-serif">?</text>
+      <circle cx="86" cy="64" r="12.5" fill="#fff"/>
+      <circle cx="114" cy="64" r="12.5" fill="#fff"/>
+      <g class="pupils"><circle cx="87" cy="65" r="5.6" fill="#1F2B3B"/><circle cx="115" cy="65" r="5.6" fill="#1F2B3B"/></g>
+      <path d="M95 73 L105 73 L100 82 Z" fill="var(--beak)"/>
+      <path d="M88 124 q3 -5 6 0 M106 124 q3 -5 6 0" stroke="var(--beak)" stroke-width="3.5" fill="none" stroke-linecap="round"/>
     </g>
   </defs>
 </svg>
@@ -444,8 +460,8 @@ const DB={
 const SND={
   ctx:null,on:true,
   unlock(){try{if(!this.ctx){const C=window.AudioContext||window.webkitAudioContext;if(C)this.ctx=new C();}if(this.ctx&&this.ctx.state==='suspended')this.ctx.resume();}catch(e){}},
-  play(notes){
-    if(!this.on||!this.ctx)return;
+  play(notes,force){
+    if((!this.on&&!force)||!this.ctx)return;
     try{
       const t0=this.ctx.currentTime+0.02;
       notes.forEach(([f,st,d,type,vol])=>{
@@ -459,6 +475,11 @@ const SND={
     }catch(e){}
   }
 };
+const OXS={
+  quiz:{o:[[988,0,.34,'sine',.24],[784,.22,.7,'sine',.24]],x:[[196,0,.16,'square',.07],[196,.24,.42,'square',.07]]},
+  soft:{o:[[880,0,.35],[1175,.17,.55]],x:[[392,0,.3,'triangle',.16],[330,.22,.45,'triangle',.16]]}
+};
+function playOX(kind,setting){const st=setting||(P.quiz&&P.quiz.settings.oxSound)||'quiz';if(st==='off'||!OXS[st])return;SND.play(OXS[st][kind],true);}
 const S={
   ok:[[880,0,.35],[1175,.17,.55]],
   ng:[[392,0,.3,'triangle',.16],[330,.22,.45,'triangle',.16]],
@@ -489,7 +510,7 @@ function readImage(file){
 }
 
 /* ===== データの形 ===== */
-const DEF_SET={time:30,timerStyle:'pie',autoStart:false,markStyle:'big',markHold:3,sound:true,hideBar:false};
+const DEF_SET={time:30,timerStyle:'pie',autoStart:false,markStyle:'big',markHold:3,sound:true,oxSound:'quiz',hideBar:false};
 function newQ(){return{id:uid(),text:'',image:null,type:'choice',choiceCount:4,choices:[0,1,2,3].map(()=>({text:'',image:null})),correct:0,
   choicesShow:'start',choicesAt:10,answerText:'',answerImage:null,timeMode:'default',time:30,hints:[]};}
 function normQ(q){
@@ -503,7 +524,8 @@ function normQ(q){
   o.choices.forEach(c=>{c.image=okImg(c.image);c.text=String(c.text||'');});
   o.hints.forEach(h=>{h.image=okImg(h.image);h.text=String(h.text||'');h.mode=h.mode==='time'?'time':'button';h.at=Math.max(1,+h.at||10);});
   ['text','answerText'].forEach(k=>{o[k]=String(o[k]||'');});
-  o.type=o.type==='free'?'free':'choice';
+  o.type=['choice','ox','free'].includes(o.type)?o.type:'choice';
+  fixQ(o);
   o.choicesShow=['start','button','time'].includes(o.choicesShow)?o.choicesShow:'start';
   o.timeMode=o.timeMode==='custom'?'custom':'default';o.time=Math.max(0,+o.time||0);o.choicesAt=Math.max(1,+o.choicesAt||10);
   return o;
@@ -513,6 +535,9 @@ function normQuiz(z){
   return{id:z.id||uid(),title:z.title||'クイズ',settings:Object.assign({},DEF_SET,z.settings||{}),questions:z.questions.map(normQ),updated:z.updated||Date.now(),sample:!!z.sample};
 }
 const okImg=v=>(typeof v==='string'&&/^data:image\/(png|jpe?g|gif|webp|svg\+xml)[;,]/.test(v))?v:null;
+function fixQ(q){const n=q.type==='ox'?2:q.choiceCount;if(!(q.correct>=0&&q.correct<n))q.correct=0;}
+const isCL=q=>!!q&&(q.type==='choice'||q.type==='ox');
+const corrLabel=q=>q.type==='ox'?(q.correct===1?'×':'○'):ABCD[q.correct];
 const effTime=(q,quiz)=>q.timeMode==='custom'?q.time:quiz.settings.time;
 
 /* ===== サンプル ===== */
@@ -536,6 +561,8 @@ function sampleQuiz(){
      hints:[{text:'かどが ない かたちだよ',mode:'button',at:10}]},
     {text:'日本《にっぽん》で いちばん 高《たか》い 山《やま》は なにかな？',type:'free',answerText:'富士山《ふじさん》',answerImage:SV.fuji,
      hints:[{text:'しずおかけんと やまなしけんの あいだに あるよ',mode:'time',at:10},{text:'「ふ」で はじまるよ',mode:'time',at:20}]},
+    {text:'ペンギンは そらを とべる。○かな？ ×かな？',type:'ox',correct:1,answerText:'ペンギンは とべないけれど、およぐのが とくいだよ',
+     hints:[{text:'つばさは あるけれど…',mode:'button',at:10}]},
     {text:'1週間《しゅうかん》は なん日 かな？',image:SV.cal,type:'choice',choiceCount:4,choicesShow:'button',
      choices:[{text:'5日'},{text:'6日'},{text:'7日'},{text:'10日'}],correct:2,
      hints:[{text:'月《げつ》・火《か》・水《すい》… と かぞえてみよう',mode:'button',at:10}]}
@@ -613,7 +640,7 @@ function renderList(){
       const t=plain(q.text);
       return `<button class="li ${E.qi===i?'on':''}" data-act="e-pick" data-i="${i}"><span class="lin">${i+1}</span>
         <span class="lit ${t?'':'ph'}">${t?esc(t):`（まだ ${R('書','か')}いていないよ）`}</span>
-        <span class="lim">${q.image?`<img src="${esc(q.image)}" alt="">`:(q.type==='choice'?'ABCD':'くち')}</span></button>`;
+        <span class="lim">${q.image?`<img src="${esc(q.image)}" alt="">`:(q.type==='choice'?'ABCD':q.type==='ox'?'○×':'くち')}</span></button>`;
     }).join('');
   const on=$('#eList .li.on');if(on&&on.scrollIntoView)on.scrollIntoView({block:'nearest'});
 }
@@ -641,17 +668,19 @@ function renderForm(){
     </section>
     <section class="fsec">
       <div class="frow"><span class="lab">○×の ${R('出','だ')}しかた</span>${seg('markStyle',s.markStyle,[['big',`${R('大','おお')}きく ${R('画面','がめん')}に`],['glow',`えらんだ ${R('選択肢','せんたくし')}に`]])}
-        <span class="note">「えらんだ ${R('選択肢','せんたくし')}に」は、${R('出題','しゅつだい')}${R('中','ちゅう')}に ${R('選択肢','せんたくし')}を タップして えらんでから ○× を ${R('出','だ')}すと、その ${R('選択肢','せんたくし')}に つくよ。えらんでいない ときや ${R('選択肢','せんたくし')}が ない ${R('問題','もんだい')}では、${R('大','おお')}きく ${R('出','だ')}るよ。</span></div>
+        <span class="note">「えらんだ ${R('選択肢','せんたくし')}に」は、${R('出題','しゅつだい')}${R('中','ちゅう')}に ${R('選択肢','せんたくし')}を タップして えらんでから ○× を ${R('出','だ')}すと、その ${R('選択肢','せんたくし')}に つくよ。えらんでいない ときの ○ は、${R('正解','せいかい')}の ${R('選択肢','せんたくし')}に つくよ（${R('意見','いけん')}が わかれた ときなど）。${R('選択肢','せんたくし')}の ない ${R('問題','もんだい')}では ${R('大','おお')}きく ${R('出','で')}るよ。</span></div>
       <div class="frow"><span class="lab">${R('大','おお')}きな ○× が ${R('消','き')}えるまで</span>${seg('markHold',s.markHold,[['2','2秒'],['3','3秒'],['5','5秒'],['0',`タップするまで`]])}</div>
-      <div class="frow"><span class="lab">${R('効果音','こうかおん')}</span>${seg('sound',s.sound,[['true','あり'],['false','なし']])}</div>
+      <div class="frow"><span class="lab">○×の ${R('音','おと')}</span><div class="stepwrap">${seg('oxSound',s.oxSound,[['quiz','ピンポン・ブー'],['soft',`やさしい ${R('音','おと')}`],['off','なし']])}
+          <button type="button" class="btn sm" data-act="test-o">♪ ○</button><button type="button" class="btn sm" data-act="test-x">♪ ×</button></div></div>
+      <div class="frow"><span class="lab">そのほかの ${R('効果音','こうかおん')}</span>${seg('sound',s.sound,[['true','あり'],['false','なし']])}<span class="note">タイマー・ヒント・こたえの ${R('音','おと')}だよ</span></div>
       <div class="frow"><span class="lab">${R('出題','しゅつだい')}${R('画面','がめん')}の ${R('操作','そうさ')}ボタン</span>${seg('hideBar',s.hideBar,[['false',`いつも ${R('出','だ')}す`],['true','かくしておく']])}
-        <span class="note">かくしておく ときは、ふくろうの おなかを タップすると ${R('出','で')}てくるよ。ふくろうの むかって ${R('左','ひだり')}の ${R('目','め')}で ○、${R('右','みぎ')}の ${R('目','め')}で × が ${R('出','で')}るよ。</span></div>
+        <span class="note">かくしておく ときは、ふくろうの おなかを タップすると ${R('出','で')}てくるよ。ふくろうが もっている ○の ${R('札','ふだ')}で ○、×の ${R('札','ふだ')}で ×、あたまで こたえが ${R('出','で')}るよ。</span></div>
     </section>`;
     return;
   }
   const q=z.questions[E.qi];
   if(!q){f.innerHTML=`<div class="empty">${R('問題','もんだい')}が ないよ。「＋ ${R('問題','もんだい')}を ふやす」を おしてね。</div>`;return;}
-  const isC=q.type==='choice';
+  const isC=q.type==='choice',isOX=q.type==='ox',isL=isC||isOX;
   const choiceRows=isC?q.choices.slice(0,q.choiceCount).map((c,k)=>`
     <div class="crowe ${q.correct===k?'isc':''}">
       <span class="clet" style="background:var(--c${ABCD[k]})">${ABCD[k]}</span>
@@ -672,19 +701,21 @@ function renderForm(){
   </section>
   <section class="fsec">
     <h3>こたえかた</h3>
-    ${seg('type',q.type,[['choice',`A〜Dから えらぶ`],['free',`えらばない（${R('口','くち')}で こたえる）`]])}
+    ${seg('type',q.type,[['choice',`A〜Dから えらぶ`],['ox','○× クイズ'],['free',`えらばない（${R('口','くち')}で こたえる）`]])}
+    ${isOX?`<div class="frow"><span class="lab">${R('正解','せいかい')}は どっち？</span>${seg('correct',q.correct,[['0','○ が '+R('正解','せいかい')],['1','× が '+R('正解','せいかい')]])}</div>`:''}
     ${isC?`
       <div class="frow"><span class="lab">${R('選択肢','せんたくし')}の かず</span>${seg('choiceCount',q.choiceCount,[['2','2こ（A・B）'],['3','3こ（A〜C）'],['4','4こ（A〜D）']])}</div>
-      ${choiceRows}
+      ${choiceRows}`:''}
+    ${isL?`
       <div class="frow"><span class="lab">${R('選択肢','せんたくし')}を ${R('出','だ')}すとき</span>${seg('choicesShow',q.choicesShow,[['start','はじめから'],['button','ボタンを おしたら'],['time',`${R('時間','じかん')}が たったら`]])}
         ${q.choicesShow==='time'?stepper('choicesAt',q.choicesAt,1,600,1,'秒たったら'):''}
         <span class="note">あとから ${R('出','だ')}すと、まず ${R('自分','じぶん')}で かんがえてから えらぶ ${R('問題','もんだい')}に なるよ</span></div>`:''}
   </section>
   <section class="fsec">
-    <h3>こたえ${isC?'の せつめい（なくても いいよ）':''}</h3>
-    <div class="frow"><input class="tin" type="text" data-f="answerText" value="${esc(q.answerText)}" placeholder="${isC?'れい：あかくて まるい くだものだね':'れい：けいさつかん'}"></div>
+    <h3>こたえ${isL?'の せつめい（なくても いいよ）':''}</h3>
+    <div class="frow"><input class="tin" type="text" data-f="answerText" value="${esc(q.answerText)}" placeholder="${isL?'れい：あかくて まるい くだものだね':'れい：けいさつかん'}"></div>
     <div class="frow"><span class="lab">こたえの ${R('画像','がぞう')}</span>${imgSlot('answerImage',q.answerImage)}</div>
-    ${isC?`<span class="note">「こたえ」を おすと、${R('正解','せいかい')}の ${R('選択肢','せんたくし')}が ひかるよ。せつめいが あれば いっしょに ${R('出','で')}るよ。</span>`:''}
+    ${isL?`<span class="note">「こたえ」を おすと、${R('正解','せいかい')}の ${R('選択肢','せんたくし')}が ひかるよ。せつめいが あれば いっしょに ${R('出','で')}るよ。</span>`:''}
   </section>
   <section class="fsec">
     <h3>${R('制限','せいげん')}${R('時間','じかん')}</h3>
@@ -725,7 +756,7 @@ eForm.addEventListener('input',e=>{
 eForm.addEventListener('change',e=>{const st=e.target.closest('.stepper');if(st&&e.target.tagName==='INPUT')stepSet(st,Number(e.target.value));});
 eForm.addEventListener('click',e=>{
   const sb=e.target.closest('.seg button');
-  if(sb){const g=sb.closest('.seg');setPath(curObj(),g.dataset.seg,conv(sb.dataset.v));touch();renderForm();renderList();return;}
+  if(sb){const g=sb.closest('.seg');setPath(curObj(),g.dataset.seg,conv(sb.dataset.v));if(E.qi>=0)fixQ(curObj());touch();renderForm();renderList();return;}
   const sd=e.target.closest('.stepper button');
   if(sd){const st=sd.closest('.stepper');const cur=Number(getPath(curObj(),st.dataset.num))||0;stepSet(st,cur+Number(sd.dataset.d)*Number(st.dataset.step));return;}
   const idel=e.target.closest('[data-imgdel]');
@@ -787,7 +818,7 @@ function renderPlay(){
     renderBar();return;
   }
   const q=qs[P.i];P.q=q;P.limit=effTime(q,z)||0;
-  P.choicesShown=q.type!=='choice'||q.choicesShow==='start';
+  P.choicesShown=!isCL(q)||q.choicesShow==='start';
   $('#pNo').hidden=false;$('#pNo').innerHTML=`${P.i+1}<small>／${qs.length}</small>`;
   const hasImg=!!q.image,hasText=!!plain(q.text);
   body.className='pbody'+(q.hints.length?' has-hints':'');
@@ -803,29 +834,33 @@ function renderPlay(){
   renderChoices();setupTimer();renderBar();
   if(z.settings.autoStart&&hasTimeWork())startTimer(false);
 }
-function hasTimeWork(){const q=P.q;if(!q)return false;return P.limit>0||q.hints.some(h=>h.mode==='time')||(q.type==='choice'&&q.choicesShow==='time');}
+function hasTimeWork(){const q=P.q;if(!q)return false;return P.limit>0||q.hints.some(h=>h.mode==='time')||(isCL(q)&&q.choicesShow==='time');}
 function renderChoices(){
   const el=$('#pCh');if(!el)return;const q=P.q;
-  if(!q||q.type!=='choice'||!P.choicesShown){el.hidden=true;el.innerHTML='';return;}
-  const n=q.choiceCount;el.hidden=false;el.className=`choices n${n}`;el.style.setProperty('--n',n);
-  el.innerHTML=q.choices.slice(0,n).map((c,k)=>`<button type="button" class="choice" data-k="${k}" style="--cc:var(--c${ABCD[k]})">
+  if(!isCL(q)||!P.choicesShown){el.hidden=true;el.innerHTML='';return;}
+  const ox=q.type==='ox',n=ox?2:q.choiceCount;el.hidden=false;el.className=`choices n${n}${ox?' oxc':''}`;el.style.setProperty('--n',n);
+  el.innerHTML=ox?[0,1].map(k=>`<button type="button" class="choice ox" data-k="${k}" style="--cc:var(--${k?'batsu':'maru'})">
+      <div class="oxsym">${MARK_SVG[k?'x':'o']}</div><span class="ctag" hidden></span><div class="cmark" hidden></div></button>`).join(''):
+    q.choices.slice(0,n).map((c,k)=>`<button type="button" class="choice" data-k="${k}" style="--cc:var(--c${ABCD[k]})">
       ${c.image?`<div class="cimg"><img src="${esc(c.image)}" alt=""></div>`:''}
       <div class="crow"><span class="cl">${ABCD[k]}</span>${plain(c.text)?`<span class="ct">${fmt(c.text)}</span>`:''}</div>
       <span class="ctag" hidden></span><div class="cmark" hidden></div></button>`).join('');
   applyChoiceState();
 }
 const MARK_SVG={
-  o:`<svg viewBox="0 0 100 100" aria-hidden="true"><circle cx="50" cy="50" r="37" fill="none" stroke="var(--ok)" stroke-width="12"/></svg>`,
-  x:`<svg viewBox="0 0 100 100" aria-hidden="true"><path d="M20 20 L80 80 M80 20 L20 80" stroke="var(--ng)" stroke-width="12" stroke-linecap="round" fill="none"/></svg>`
+  o:`<svg viewBox="0 0 100 100" aria-hidden="true"><circle cx="50" cy="50" r="37" fill="none" stroke="var(--maru)" stroke-width="12"/></svg>`,
+  x:`<svg viewBox="0 0 100 100" aria-hidden="true"><path d="M20 20 L80 80 M80 20 L20 80" stroke="var(--batsu)" stroke-width="12" stroke-linecap="round" fill="none"/></svg>`
 };
 const MARK_TXT={o:'せいかい！',x:'おしい！'};
 function applyChoiceState(){
   $$('#pCh .choice').forEach(b=>{
     const k=+b.dataset.k,corr=P.answerShown&&k===P.q.correct;
     b.classList.toggle('sel',P.selected===k);b.classList.toggle('correct',corr);b.classList.toggle('dim',P.answerShown&&!corr);
-    const tag=b.querySelector('.ctag');const t=corr?'こたえ':(P.selected===k?'えらんだ':'');tag.textContent=t;tag.hidden=!t;
+    const cm=P.cardMark&&P.cardMark.k===k?P.cardMark.kind:'';
+    const tag=b.querySelector('.ctag');const t=cm?MARK_TXT[cm]:(corr?'こたえ':(P.selected===k?'えらんだ':''));tag.textContent=t;tag.hidden=!t;
+    tag.classList.toggle('mo',cm==='o');tag.classList.toggle('mx',cm==='x');
     const m=b.querySelector('.cmark');
-    if(P.cardMark&&P.cardMark.k===k){m.hidden=false;m.className='cmark '+P.cardMark.kind;m.innerHTML=MARK_SVG[P.cardMark.kind]+`<b>${MARK_TXT[P.cardMark.kind]}</b>`;}
+    if(P.cardMark&&P.cardMark.k===k){m.hidden=false;m.className='cmark '+P.cardMark.kind;m.innerHTML=MARK_SVG[P.cardMark.kind];}
     else{m.hidden=true;m.innerHTML='';}
   });
 }
@@ -875,9 +910,9 @@ function showChoices(){if(!P.q||P.choicesShown)return;P.choicesShown=true;render
 function toggleAnswer(){
   const q=P.q;if(!q)return;
   P.answerShown=!P.answerShown;
-  if(P.answerShown){P.running=false;if(q.type==='choice'&&!P.choicesShown){P.choicesShown=true;renderChoices();}SND.play(S.ans);}
+  if(P.answerShown){P.running=false;if(isCL(q)&&!P.choicesShown){P.choicesShown=true;renderChoices();}SND.play(S.ans);}
   const chip=$('#pChip');
-  if(q.type==='choice'){chip.hidden=!P.answerShown;chip.textContent=`こたえ ${ABCD[q.correct]}`;applyChoiceState();}
+  if(isCL(q)){chip.hidden=!P.answerShown;chip.textContent=`こたえ ${corrLabel(q)}`;applyChoiceState();}
   const a=$('#pAns');
   if(P.answerShown&&(plain(q.answerText)||q.answerImage)){
     a.hidden=false;
@@ -885,12 +920,14 @@ function toggleAnswer(){
   }else{a.hidden=true;a.innerHTML='';}
   renderBar();
 }
-function hasAnswer(){const q=P.q;return q&&(q.type==='choice'||plain(q.answerText)||q.answerImage);}
+function hasAnswer(){const q=P.q;return q&&(isCL(q)||plain(q.answerText)||q.answerImage);}
 function mark(kind){
   if(P.q)P.marks[P.i]=kind;
-  SND.play(kind==='o'?S.ok:S.ng);
-  if(P.quiz.settings.markStyle==='glow'&&P.q&&P.q.type==='choice'&&P.choicesShown&&P.selected>=0){
-    P.cardMark={k:P.selected,kind};applyChoiceState();return;
+  playOX(kind);
+  if(P.quiz.settings.markStyle==='glow'&&isCL(P.q)&&P.choicesShown){
+    /* えらんでいれば その選択肢に。えらんでいないときの○は 正解の選択肢に つける */
+    const k=P.selected>=0?P.selected:(kind==='o'?P.q.correct:-1);
+    if(k>=0){P.cardMark={k,kind};applyChoiceState();return;}
   }
   const m=$('#pMark');m.className='markov '+kind;m.innerHTML=MARK_SVG[kind]+`<b>${MARK_TXT[kind]}</b>`;m.hidden=false;
   clearTimeout(P.markT);const hold=+P.quiz.settings.markHold;
@@ -918,7 +955,7 @@ function renderBar(){
     h+=`<button class="btn ${P.running?'':'primary'}" data-act="p-start">${lab}</button>`;
   }
   if(q.hints.length){const rem=q.hints.length-P.revealed.size;h+=`<button class="btn" data-act="p-hint" ${rem?'':'disabled'}>ヒント <small>のこり${rem}</small></button>`;}
-  if(q.type==='choice'&&!P.choicesShown)h+=`<button class="btn" data-act="p-choices">${R('選択肢','せんたくし')}を ${R('出','だ')}す</button>`;
+  if(isCL(q)&&!P.choicesShown)h+=`<button class="btn" data-act="p-choices">${R('選択肢','せんたくし')}を ${R('出','だ')}す</button>`;
   if(hasAnswer())h+=`<button class="btn" data-act="p-answer">${P.answerShown?'こたえを かくす':'こたえ'}</button>`;
   h+=`<button class="btn primary" data-act="p-next">つぎ ▶</button>`;
   bar.innerHTML=h;
@@ -938,7 +975,7 @@ function frame(t){
   P.elapsed+=Math.min(raw,0.5);
   const q=P.q;
   q.hints.forEach((h,k)=>{if(h.mode==='time'&&!P.revealed.has(k)&&P.elapsed>=h.at)revealHint(k);});
-  if(q.type==='choice'&&!P.choicesShown&&q.choicesShow==='time'&&P.elapsed>=q.choicesAt)showChoices();
+  if(isCL(q)&&!P.choicesShown&&q.choicesShow==='time'&&P.elapsed>=q.choicesAt)showChoices();
   if(P.limit>0&&P.elapsed>=P.limit){P.elapsed=P.limit;drawTimer();timeUp();return;}
   drawTimer();
 }
@@ -978,6 +1015,9 @@ document.addEventListener('click',async e=>{
     case 'p-hint':nextHint();break;
     case 'p-choices':showChoices();break;
     case 'p-answer':toggleAnswer();break;
+    case 'owl-ans':if(hasAnswer())toggleAnswer();break;
+    case 'test-o':playOX('o',E.quiz.settings.oxSound);break;
+    case 'test-x':playOX('x',E.quiz.settings.oxSound);break;
     case 'owl-o':mark('o');break;
     case 'owl-x':mark('x');break;
     case 'owl-bar':P.barHidden=!P.barHidden;$('#pBar').classList.toggle('hide',P.barHidden);break;
