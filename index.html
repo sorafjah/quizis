@@ -73,6 +73,28 @@ button{font-family:var(--font);color:var(--ink)}
 .qbtns{display:flex;flex-wrap:wrap;gap:8px}
 .qbtns .btn.primary{flex:1 1 100%;min-height:52px;font-size:18px}
 .empty{background:var(--panel);border:2px dashed var(--line);border-radius:14px;padding:30px;text-align:center;color:var(--sub)}
+.guide{position:fixed;inset:0;z-index:90;background:rgba(31,43,59,.45);display:grid;place-items:center;
+  padding:max(16px,env(safe-area-inset-top,0px)) max(16px,env(safe-area-inset-right,0px)) max(16px,env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px));animation:fade .2s}
+.gpanel{background:var(--panel);border-radius:16px;width:min(860px,100%);max-height:100%;display:grid;grid-template-rows:auto minmax(0,1fr) auto;overflow:hidden;box-shadow:0 20px 50px rgba(31,43,59,.25)}
+.ghead{display:flex;align-items:center;gap:12px;padding:14px 18px;border-bottom:2px solid var(--line)}
+.ghead h2{margin:0;font-size:22px;flex:1}
+.gbody{overflow:auto;padding:18px 22px 8px;display:grid;gap:22px;font-size:16px;line-height:1.75;-webkit-user-select:text;user-select:text}
+.gbody p{margin:0}
+.glead{font-size:17px}
+.gsec{display:grid;gap:10px}
+.gsec h3{margin:0;font-size:18px;display:flex;align-items:center;gap:10px}
+.gn{width:30px;height:30px;border-radius:50%;background:var(--ink);color:#fff;display:inline-grid;place-items:center;font-size:15px;flex:none}
+.gsec ol,.gsec ul{margin:0;padding-left:1.4em}
+.gsec li{margin:2px 0}
+.gdl{margin:0;display:grid;grid-template-columns:minmax(9em,auto) 1fr;gap:8px 16px}
+.gdl dt{font-weight:700}
+.gdl dd{margin:0}
+.gtip{background:var(--accent-soft);border-radius:10px;padding:10px 14px}
+.gbody code{background:var(--soft);border-radius:6px;padding:1px 6px;font-family:var(--font)}
+.gkeys{list-style:none;padding:0!important;display:flex;flex-wrap:wrap;gap:6px 22px}
+.gfoot{padding:12px 18px;border-top:2px solid var(--line);display:flex;justify-content:flex-end}
+.gfoot .btn{min-width:160px;min-height:50px;font-size:18px}
+@media (max-width:600px){.gdl{grid-template-columns:minmax(0,1fr)}.gdl dd{margin-bottom:6px}}
 .help{background:var(--panel);border:2px solid var(--line);border-radius:14px;padding:4px 18px}
 .help summary{min-height:48px;display:flex;align-items:center;font-weight:700;font-size:18px;cursor:pointer}
 .help .hgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:18px;padding-block:6px 18px}
@@ -128,6 +150,9 @@ textarea:focus,.tin:focus,.etitle:focus,.stepper input:focus{outline:3px solid v
 .imgslot.has{border-style:solid;padding:0;background:#fff}
 .imgslot img{width:100%;height:100%;object-fit:contain}
 .imgslot.drag{border-color:var(--accent);background:var(--accent-soft)}
+.zpick{position:relative;display:inline-block;max-width:340px;cursor:crosshair;border:2px solid var(--line);border-radius:10px;overflow:hidden;line-height:0}
+.zpick img{display:block;width:100%;height:auto}
+.zdot{position:absolute;width:30px;height:30px;margin:-15px 0 0 -15px;border-radius:50%;border:4px solid #fff;background:var(--ng);box-shadow:0 0 0 2px var(--ink);pointer-events:none}
 .crowe{display:grid;grid-template-columns:44px minmax(0,1fr) auto;gap:10px;align-items:start;padding:10px;border-radius:12px;border:2px solid var(--line)}
 .crowe.isc{border-color:var(--ok);background:var(--ok-soft)}
 .crowe .clet{width:44px;height:44px;border-radius:50%;color:#fff;font-weight:700;font-size:20px;display:grid;place-items:center}
@@ -162,6 +187,13 @@ textarea:focus,.tin:focus,.etitle:focus,.stepper input:focus{outline:3px solid v
 .qbox{position:relative;background:var(--panel);border:3px solid var(--line);border-radius:2.4vmin;display:flex;gap:3vmin;padding:2.6vmin;min-height:0;overflow:hidden}
 .qimg{flex:1 1 50%;min-width:0;min-height:0;display:flex;align-items:center;justify-content:center}
 .qimg img{max-width:100%;max-height:100%;object-fit:contain;border-radius:1.2vmin}
+.qimg{position:relative}
+.rv{position:relative;overflow:hidden;border-radius:1.2vmin;flex:none}
+.qimg .rv img{width:100%;height:100%;max-width:none;max-height:none;display:block;border-radius:0;transition:filter .7s ease,transform .9s ease}
+.tiles{position:absolute;inset:0;display:grid;gap:.5vmin}
+.tile{background:var(--tl);display:grid;place-items:center;color:rgba(255,255,255,.75);font-weight:700;font-size:clamp(18px,5vmin,70px);transition:opacity .5s ease,transform .5s ease}
+.tile.open{opacity:0;transform:scale(.6) rotate(-6deg)}
+.rvstep{position:absolute;right:1vmin;bottom:1vmin;background:var(--ink);color:#fff;font-weight:700;font-size:clamp(13px,2.2vmin,26px);border-radius:999px;padding:0 .7em;opacity:.85}
 .qtext{flex:1 1 50%;min-width:0;display:flex;align-items:center;overflow:auto;font-size:clamp(22px,5.4vmin,78px);font-weight:700;line-height:1.55}
 .qbox.noimg .qtext{justify-content:center;text-align:center;font-size:clamp(26px,6.8vmin,96px)}
 .qbox.notext .qimg{flex-basis:100%}
@@ -279,52 +311,12 @@ textarea:focus,.tin:focus,.etitle:focus,.stepper input:focus{outline:3px solid v
       <div class="hact">
         <button class="btn primary" data-act="home-new">＋ <ruby>新<rt>あたら</rt></ruby>しい クイズを つくる</button>
         <button class="btn" data-act="home-import">ファイルから <ruby>読<rt>よ</rt></ruby>みこむ</button>
+        <button class="btn" data-act="guide-open">使い方</button>
         <button class="btn" data-act="home-full"><ruby>全<rt>ぜん</rt></ruby><ruby>画面<rt>がめん</rt></ruby>にする</button>
       </div>
     </header>
     <div id="hList" class="qgrid"></div>
-    <details class="help">
-      <summary>つかいかた</summary>
-      <div class="hgrid">
-        <div>
-          <h3>PCで つくって、iPadで <ruby>出<rt>だ</rt></ruby>す</h3>
-          <ol>
-            <li>PCで「<ruby>新<rt>あたら</rt></ruby>しい クイズを つくる」を おして、<ruby>問題<rt>もんだい</rt></ruby>を つくるよ</li>
-            <li>「ファイルにする」を おすと、クイズが 1つの ファイルに なるよ</li>
-            <li>ファイルを iPadへ おくってね（Googleドライブ、メール など）</li>
-            <li>iPadで「ファイルから <ruby>読<rt>よ</rt></ruby>みこむ」を おして、ファイルを えらぶよ。<ruby>同<rt>おな</rt></ruby>じ クイズは <ruby>新<rt>あたら</rt></ruby>しい ほうに おきかわるよ</li>
-          </ol>
-          <p class="note">クイズは この ブラウザの <ruby>中<rt>なか</rt></ruby>に <ruby>保存<rt>ほぞん</rt></ruby>されるよ。ブラウザの データを <ruby>消<rt>け</rt></ruby>すと なくなるので、ファイルにして とっておくと <ruby>安心<rt>あんしん</rt></ruby>だよ。</p>
-        </div>
-        <div>
-          <h3>ふくろうの かくしボタン</h3>
-          <div class="owlmap">
-            <div class="owl"><svg viewBox="0 0 200 130" aria-hidden="true"><use href="#owlArt"/></svg>
-              <span class="oz o">○</span><span class="oz x">×</span><span class="oz h">こたえ</span><span class="oz b">ボタン</span></div>
-            <dl>
-              <dt>○の <ruby>札<rt>ふだ</rt></ruby></dt><dd>○ を <ruby>出<rt>だ</rt></ruby>す</dd>
-              <dt>×の <ruby>札<rt>ふだ</rt></ruby></dt><dd>× を <ruby>出<rt>だ</rt></ruby>す</dd>
-              <dt>あたま</dt><dd>こたえを <ruby>出<rt>だ</rt></ruby>す・かくす</dd>
-              <dt>おなか</dt><dd><ruby>操作<rt>そうさ</rt></ruby>ボタンを <ruby>出<rt>だ</rt></ruby>す・かくす</dd>
-            </dl>
-          </div>
-          <p class="note">1<ruby>回<rt>かい</rt></ruby> タップで <ruby>反応<rt>はんのう</rt></ruby>するよ。ふくろうの <ruby>見<rt>み</rt></ruby>た<ruby>目<rt>め</rt></ruby>は かわらないので、こっそり つかえるよ。<ruby>選択肢<rt>せんたくし</rt></ruby>を えらばなくても、あたまで こたえが <ruby>出<rt>で</rt></ruby>るよ。</p>
-        </div>
-        <div>
-          <h3>ふりがなの つけかた</h3>
-          <ul>
-            <li><b><ruby>漢字<rt>かんじ</rt></ruby>《かんじ》</b> と <ruby>書<rt>か</rt></ruby>くと、<ruby>漢字<rt>かんじ</rt></ruby>に ふりがなが つくよ</li>
-            <li><b>｜<ruby>富士<rt>ふじ</rt></ruby>山《ふじさん》</b> のように「｜」を つけると、そこから うしろに つくよ</li>
-          </ul>
-          <h3 style="margin-top:14px">キーボード（PCのとき）</h3>
-          <ul>
-            <li><span class="kbd">スペース</span> スタート・とめる　<span class="kbd">H</span> ヒント</li>
-            <li><span class="kbd">A</span> こたえ　<span class="kbd">C</span> <ruby>選択肢<rt>せんたくし</rt></ruby>を <ruby>出<rt>だ</rt></ruby>す</li>
-            <li><span class="kbd">O</span> ○　<span class="kbd">X</span> ×　<span class="kbd">→</span> つぎ　<span class="kbd">←</span> まえ</li>
-          </ul>
-        </div>
-      </div>
-    </details>
+
   </div>
 </section>
 
@@ -369,6 +361,100 @@ textarea:focus,.tin:focus,.etitle:focus,.stepper input:focus{outline:3px solid v
   </footer>
   <div class="markov" id="pMark" hidden></div>
 </section>
+
+<!-- 使い方（先生向け） -->
+<div id="guide" class="guide" hidden role="dialog" aria-modal="true" aria-labelledby="gTitle">
+  <div class="gpanel">
+    <header class="ghead">
+      <h2 id="gTitle">quizis の使い方</h2>
+      <button class="btn" data-act="guide-close">閉じる</button>
+    </header>
+    <div class="gbody scroll">
+      <p class="glead">iPad で出題し、Apple TV などで大型ディスプレイにミラーリングして使うクイズアプリです。問題は PC で作り、ファイルにして iPad に渡します。この説明は、ホーム画面の「使い方」ボタンからいつでも開けます。</p>
+
+      <section class="gsec">
+        <h3><span class="gn">1</span>準備の流れ</h3>
+        <ol>
+          <li>PC でこのページを開き、「新しい クイズを つくる」を押します。</li>
+          <li>問題を作ります。入力した内容は自動で保存されます。</li>
+          <li>「ファイルにする」を押すと、クイズ全体が 1 つの .json ファイルとして保存されます（画像も中に入ります）。</li>
+          <li>ファイルを iPad に送ります（Google ドライブ、メール、AirDrop など）。</li>
+          <li>iPad でこのページを開き、「ファイルから 読みこむ」でファイルを選びます。同じクイズを読みこむと、新しいほうに置きかわります。</li>
+          <li>iPad の画面を Apple TV にミラーリングし、クイズの「はじめる」を押します。</li>
+        </ol>
+        <p class="gtip">iPad では Safari の共有メニューから「ホーム画面に追加」して開くと、アドレスバーが消えて画面を広く使えます。</p>
+      </section>
+
+      <section class="gsec">
+        <h3><span class="gn">2</span>問題の作り方</h3>
+        <dl class="gdl">
+          <dt>答えかた</dt><dd>「A〜D から選ぶ（2〜4 択）」「○× クイズ」「選ばない（口で答える）」の 3 種類です。A〜D の選択肢には、文字と画像のどちらか、または両方を入れられます。</dd>
+          <dt>画像</dt><dd>枠をクリックして選ぶほか、ドラッグ＆ドロップや、コピーした画像の Ctrl+V（Mac は ⌘+V）でも入れられます。長い辺が 1280px になるよう自動で縮小されます。</dd>
+          <dt>画像の見せかた</dt><dd>問題の画像は「パネルをめくる」「ぼかしがとれる」「アップから引いていく」で少しずつ見せられます。ボタンで進めるか、決めた秒数ごとに自動で進めるかを選べます。</dd>
+          <dt>選択肢を出すタイミング</dt><dd>「はじめから」「ボタンを押したら」「時間がたったら」から選べます。どれにしても、出題中に「選択肢を出す／かくす」ボタンでいつでも切りかえられます。</dd>
+          <dt>ヒント</dt><dd>いくつでも追加できます。それぞれ「ボタンで出す」か「○秒たったら自動で出す」かを選べます。</dd>
+          <dt>制限時間</dt><dd>クイズ全体の設定で決め、問題ごとに変えることもできます。0 秒にすると時間制限なしになります。</dd>
+          <dt>ふりがな</dt><dd><code>漢字《かんじ》</code> と書くと、漢字の上にふりがながつきます。漢字以外も含めたいときは <code>｜富士山《ふじさん》</code> のように「｜」で始まりを示します。</dd>
+          <dt>全体の設定</dt><dd>一覧の一番上「クイズ全体の 設定」で、タイマーの見せかた、○× の出しかた、音のあり・なしなどを決めます。</dd>
+        </dl>
+      </section>
+
+      <section class="gsec">
+        <h3><span class="gn">3</span>出題中の操作</h3>
+        <dl class="gdl">
+          <dt>スタート／とめる</dt><dd>タイマーを動かします。設定で「問題を出したらすぐ」動くようにもできます。</dd>
+          <dt>ヒント</dt><dd>上から順に 1 つずつ出ます。</dd>
+          <dt>画像をめくる</dt><dd>画像を少しずつ見せる問題で、次の段階に進めます。</dd>
+          <dt>選択肢を出す／かくす</dt><dd>A〜D や ○× の問題で、選択肢の表示を切りかえます。まず自由に考えさせ、途中から選択肢を出すときに使います。</dd>
+          <dt>こたえ</dt><dd>正解の選択肢が光り、ほかはうすくなります。答えの説明や画像を入れていれば、あわせて表示されます。</dd>
+          <dt>選択肢をタップ</dt><dd>子どもの答えに「えらんだ」の印をつけられます。もう一度タップで外れます。</dd>
+          <dt>おわる</dt><dd>まちがえて押しても大丈夫なように、2 回押すと終わります。</dd>
+        </dl>
+      </section>
+
+      <section class="gsec">
+        <h3><span class="gn">4</span>ふくろうのかくしボタン</h3>
+        <div class="owlmap">
+          <div class="owl"><svg viewBox="0 0 200 130" aria-hidden="true"><use href="#owlArt"/></svg>
+            <span class="oz o">○</span><span class="oz x">×</span><span class="oz h">こたえ</span><span class="oz b">ボタン</span></div>
+          <dl>
+            <dt>○ の札</dt><dd>○（せいかい）を出す</dd>
+            <dt>× の札</dt><dd>×（おしい）を出す</dd>
+            <dt>頭</dt><dd>答えを出す・かくす</dd>
+            <dt>おなか</dt><dd>操作ボタンを出す・かくす</dd>
+          </dl>
+        </div>
+        <p>出題画面の左下のふくろうに、見えないボタンが仕込んであります。押しても見た目は変わらないので、画面に映っていても子どもに気づかれずに操作できます。操作ボタンをかくしておけば、画面に映るのは問題とふくろうだけになります。</p>
+        <p>○× の出しかたは全体の設定で選べます。</p>
+        <ul>
+          <li><b>大きく画面に</b>：画面いっぱいに ○ か × が出ます。</li>
+          <li><b>えらんだ選択肢に</b>：タップで選んだ選択肢に ○× がつきます。選んでいないときの ○ は正解の選択肢につきます。</li>
+          <li><b>こたえを光らせる</b>：○ で正解の選択肢が光り、ほかはうすくなります。× で選んだ選択肢がゆれてうすくなります。○× クイズは、最初からこの方式です。</li>
+        </ul>
+      </section>
+
+      <section class="gsec">
+        <h3><span class="gn">5</span>キーボード（PC で試すとき）</h3>
+        <ul class="gkeys">
+          <li><span class="kbd">スペース</span> スタート・とめる</li>
+          <li><span class="kbd">H</span> ヒント</li>
+          <li><span class="kbd">I</span> 画像をめくる</li>
+          <li><span class="kbd">C</span> 選択肢を出す・かくす</li>
+          <li><span class="kbd">A</span> こたえ</li>
+          <li><span class="kbd">O</span> ○　<span class="kbd">X</span> ×</li>
+          <li><span class="kbd">→</span> 次　<span class="kbd">←</span> 前</li>
+        </ul>
+      </section>
+
+      <section class="gsec">
+        <h3><span class="gn">6</span>データの保存について</h3>
+        <p>クイズと画像は、使っているブラウザの中だけに保存されます。インターネット上には送られないので、子どもや人物の写真も使えます。</p>
+        <p>そのかわり、ブラウザのデータを消したり、プライベートブラウズで開いたりすると消えてしまいます。作ったクイズは「ファイルにする」で保存しておくと安心です。</p>
+      </section>
+    </div>
+    <footer class="gfoot"><button class="btn primary" data-act="guide-close">はじめる</button></footer>
+  </div>
+</div>
 
 <input type="file" id="imgInput" accept="image/*" hidden>
 <input type="file" id="jsonInput" accept=".json,application/json" multiple hidden>
@@ -527,7 +613,7 @@ function readImage(file){
 /* ===== データの形 ===== */
 const DEF_SET={time:30,timerStyle:'pie',autoStart:false,markStyle:'big',markHold:3,oxMarkStyle:'effect',sound:true,oxSound:'quiz',hideBar:false};
 function newQ(){return{id:uid(),text:'',image:null,type:'choice',choiceCount:4,choices:[0,1,2,3].map(()=>({text:'',image:null})),correct:0,
-  choicesShow:'start',choicesAt:10,answerText:'',answerImage:null,timeMode:'default',time:30,hints:[]};}
+  choicesShow:'start',choicesAt:10,reveal:'none',tiles:9,zoomX:50,zoomY:50,rvMode:'button',rvEvery:5,answerText:'',answerImage:null,timeMode:'default',time:30,hints:[]};}
 function normQ(q){
   const d=newQ();const o=Object.assign(d,q||{});
   if(!o.id)o.id=uid();
@@ -542,6 +628,9 @@ function normQ(q){
   o.type=['choice','ox','free'].includes(o.type)?o.type:'choice';
   fixQ(o);
   o.choicesShow=['start','button','time'].includes(o.choicesShow)?o.choicesShow:'start';
+  o.reveal=['none','tiles','blur','zoom'].includes(o.reveal)?o.reveal:'none';o.tiles=[4,9,16].includes(+o.tiles)?+o.tiles:9;
+  o.zoomX=Math.max(0,Math.min(100,+o.zoomX||50));o.zoomY=Math.max(0,Math.min(100,+o.zoomY||50));
+  o.rvMode=o.rvMode==='time'?'time':'button';o.rvEvery=Math.max(1,+o.rvEvery||5);
   o.timeMode=o.timeMode==='custom'?'custom':'default';o.time=Math.max(0,+o.time||0);o.choicesAt=Math.max(1,+o.choicesAt||10);
   return o;
 }
@@ -568,7 +657,7 @@ const SV={
 };
 function sampleQuiz(){
   return normQuiz({id:'sample-1',sample:true,title:'ためしに つかう クイズ',settings:Object.assign({},DEF_SET),updated:Date.now(),questions:[
-    {text:'この くだものは なにかな？',image:SV.apple,type:'choice',choiceCount:4,
+    {text:'この くだものは なにかな？',image:SV.apple,type:'choice',choiceCount:4,reveal:'tiles',tiles:9,choicesShow:'button',
      choices:[{text:'りんご'},{text:'みかん'},{text:'ぶどう'},{text:'バナナ'}],correct:0,
      hints:[{text:'あかい いろを しているよ',mode:'time',at:8},{text:'「り」で はじまるよ',mode:'button',at:15}]},
     {text:'まるい かたちは どれかな？',type:'choice',choiceCount:4,
@@ -716,6 +805,12 @@ function renderForm(){
     <div class="frow"><span class="lab">${R('問題文','もんだいぶん')}</span><textarea data-f="text" placeholder="れい：この ${R('人','ひと')}の しごとは なにかな？">${esc(q.text)}</textarea>
       <span class="note">ふりがな：${R('漢字','かんじ')}《かんじ》と ${R('書','か')}くよ</span></div>
     <div class="frow"><span class="lab">${R('問題','もんだい')}の ${R('画像','がぞう')}</span>${imgSlot('image',q.image)}</div>
+    ${q.image?`<div class="frow"><span class="lab">${R('画像','がぞう')}の ${R('見','み')}せかた</span>${seg('reveal',q.reveal,[['none','ふつう'],['tiles','パネルを めくる'],['blur','ぼかしが とれる'],['zoom','アップから ひいていく']])}</div>
+      ${q.reveal==='tiles'?`<div class="frow"><span class="lab">パネルの かず</span>${seg('tiles',q.tiles,[['4','4まい'],['9','9まい'],['16','16まい']])}<span class="note">めくる じゅんばんは ばらばらに なるよ</span></div>`:''}
+      ${q.reveal==='zoom'?`<div class="frow"><span class="lab">さいしょに アップに する ところ</span><div class="zpick" data-zpick="1"><img src="${esc(q.image)}" alt=""><span class="zdot" style="left:${q.zoomX}%;top:${q.zoomY}%"></span></div><span class="note">${R('画像','がぞう')}の なかを クリックして えらんでね</span></div>`:''}
+      ${q.reveal!=='none'?`<div class="frow"><span class="lab">すすめかた</span>${seg('rvMode',q.rvMode,[['button','ボタンで'],['time',`${R('時間','じかん')}で ${R('自動','じどう')}`]])}
+        ${q.rvMode==='time'?stepper('rvEvery',q.rvEvery,1,120,1,'秒ごと'):''}
+        <span class="note">${q.reveal==='tiles'?`パネル 1まいずつ`:'5かいに わけて'} すすむよ。「こたえ」を おすと ぜんぶ ${R('見','み')}えるよ。${q.rvMode==='time'?'タイマーが うごいている あいだ すすむよ。':''}</span></div>`:''}`:''}
   </section>
   <section class="fsec">
     <h3>こたえかた</h3>
@@ -727,7 +822,7 @@ function renderForm(){
     ${isL?`
       <div class="frow"><span class="lab">${R('選択肢','せんたくし')}を ${R('出','だ')}すとき</span>${seg('choicesShow',q.choicesShow,[['start','はじめから'],['button','ボタンを おしたら'],['time',`${R('時間','じかん')}が たったら`]])}
         ${q.choicesShow==='time'?stepper('choicesAt',q.choicesAt,1,600,1,'秒たったら'):''}
-        <span class="note">あとから ${R('出','だ')}すと、まず ${R('自分','じぶん')}で かんがえてから えらぶ ${R('問題','もんだい')}に なるよ</span></div>`:''}
+        <span class="note">あとから ${R('出','だ')}すと、まず ${R('自分','じぶん')}で かんがえてから えらぶ ${R('問題','もんだい')}に なるよ。どれに しても、${R('出題','しゅつだい')}${R('中','ちゅう')}に「${R('選択肢','せんたくし')}を ${R('出','だ')}す／かくす」ボタンで いつでも きりかえられるよ。</span></div>`:''}
   </section>
   <section class="fsec">
     <h3>こたえ${isL?'の せつめい（なくても いいよ）':''}</h3>
@@ -779,6 +874,10 @@ eForm.addEventListener('click',e=>{
   if(sd){const st=sd.closest('.stepper');const cur=Number(getPath(curObj(),st.dataset.num))||0;stepSet(st,cur+Number(sd.dataset.d)*Number(st.dataset.step));return;}
   const idel=e.target.closest('[data-imgdel]');
   if(idel){setPath(curObj(),idel.dataset.imgdel,null);touch();renderForm();renderList();return;}
+  const zp=e.target.closest('[data-zpick]');
+  if(zp){const img=zp.querySelector('img').getBoundingClientRect();const q=curObj();
+    q.zoomX=Math.round(Math.max(0,Math.min(100,(e.clientX-img.left)/img.width*100)));q.zoomY=Math.round(Math.max(0,Math.min(100,(e.clientY-img.top)/img.height*100)));
+    zp.querySelector('.zdot').style.left=q.zoomX+'%';zp.querySelector('.zdot').style.top=q.zoomY+'%';touch();return;}
   const im=e.target.closest('[data-img]');
   if(im){E.pending={obj:curObj(),path:im.dataset.img};E.lastSlot=E.pending;im.focus();$('#imgInput').value='';$('#imgInput').click();return;}
 });
@@ -842,17 +941,63 @@ function renderPlay(){
   body.className='pbody'+(q.hints.length?' has-hints':'');
   body.innerHTML=`<div class="pmain">
       <div class="qbox ${hasImg?'':'noimg'} ${hasText?'':'notext'}">
-        ${hasImg?`<div class="qimg"><img src="${esc(q.image)}" alt=""></div>`:''}
+        ${hasImg?(q.reveal!=='none'?`<div class="qimg" id="pQimg"><div class="rv" id="pRv"><img src="${esc(q.image)}" alt="" id="pRvImg"></div></div>`:`<div class="qimg"><img src="${esc(q.image)}" alt=""></div>`):''}
         ${hasText?`<div class="qtext"><div>${fmt(q.text)}</div></div>`:''}
         <div class="apanel" id="pAns" hidden></div>
       </div>
       <div class="choices" id="pCh" hidden></div>
     </div>
     ${q.hints.length?`<aside class="hints scroll" id="pHints">${q.hints.map((h,k)=>`<div class="hint ph" data-k="${k}"><span class="hl">ヒント ${k+1}</span><span class="hq">？</span></div>`).join('')}</aside>`:''}`;
-  renderChoices();setupTimer();renderBar();
+  rvInit();renderChoices();setupTimer();renderBar();
   if(z.settings.autoStart&&hasTimeWork())startTimer(false);
 }
-function hasTimeWork(){const q=P.q;if(!q)return false;return P.limit>0||q.hints.some(h=>h.mode==='time')||(isCL(q)&&q.choicesShow==='time');}
+function hasTimeWork(){const q=P.q;if(!q)return false;return P.limit>0||q.hints.some(h=>h.mode==='time')||(isCL(q)&&q.choicesShow==='time')||(!!P.rv&&q.rvMode==='time');}
+/* ===== 画像を少しずつ見せる ===== */
+const BLUR=[0.075,0.045,0.026,0.013,0.005,0],ZOOM=[6,4,2.6,1.75,1.25,1];
+const TILE_COL=['#2462C8','#D24A3D','#C98F06','#22905A'];
+let rvRO=null;
+function rvInit(){
+  P.rv=null;if(rvRO){rvRO.disconnect();rvRO=null;}
+  const q=P.q;if(!q||!q.image||q.reveal==='none')return;
+  const n=q.reveal==='tiles'?q.tiles:5;
+  const order=[...Array(n).keys()];for(let i=n-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[order[i],order[j]]=[order[j],order[i]];}
+  P.rv={step:0,max:n,order};
+  const box=$('#pRv'),img=$('#pRvImg');
+  if(q.reveal==='tiles'){
+    const side=Math.round(Math.sqrt(n));
+    let h=`<div class="tiles" style="grid-template-columns:repeat(${side},1fr);grid-template-rows:repeat(${side},1fr)">`;
+    for(let i=0;i<n;i++){const r=Math.floor(i/side),c=i%side;h+=`<div class="tile" data-t="${i}" style="--tl:${TILE_COL[(r+c)%2===0?(r%2?2:0):(c%2?1:3)]}">${i+1}</div>`;}
+    box.insertAdjacentHTML('beforeend',h+'</div>');
+  }
+  if(q.reveal==='zoom')img.style.transformOrigin=`${q.zoomX}% ${q.zoomY}%`;
+  box.insertAdjacentHTML('beforeend','<span class="rvstep" id="pRvStep"></span>');
+  const lay=()=>rvLayout();
+  if(img.complete)lay();else img.addEventListener('load',lay,{once:true});
+  try{rvRO=new ResizeObserver(lay);rvRO.observe($('#pQimg'));}catch(e){window.addEventListener('resize',lay);}
+  rvApply(true);
+}
+function rvLayout(){
+  const box=$('#pRv'),img=$('#pRvImg'),wrap=$('#pQimg');if(!box||!img||!wrap)return;
+  const nw=img.naturalWidth||4,nh=img.naturalHeight||3,cw=wrap.clientWidth,ch=wrap.clientHeight;if(!cw||!ch)return;
+  const sc=Math.min(cw/nw,ch/nh);box.style.width=Math.floor(nw*sc)+'px';box.style.height=Math.floor(nh*sc)+'px';
+  rvApply(true);
+}
+function rvApply(){
+  const q=P.q,rv=P.rv;if(!rv)return;
+  const img=$('#pRvImg'),box=$('#pRv');if(!img)return;
+  if(q.reveal==='tiles'){
+    const open=new Set(rv.order.slice(0,rv.step));
+    $$('#pRv .tile').forEach(t=>t.classList.toggle('open',open.has(+t.dataset.t)));
+  }else if(q.reveal==='blur'){
+    const w=box.clientWidth||600;img.style.filter=rv.step>=rv.max?'none':`blur(${(BLUR[rv.step]*w).toFixed(1)}px)`;
+    img.style.transform=rv.step>=rv.max?'none':'scale(1.08)';
+  }else if(q.reveal==='zoom'){
+    img.style.transform=`scale(${ZOOM[rv.step]})`;
+  }
+  const st=$('#pRvStep');if(st){st.textContent=`${rv.step}／${rv.max}`;st.hidden=rv.step>=rv.max;}
+}
+function rvNext(){const rv=P.rv;if(!rv||rv.step>=rv.max)return;rv.step++;rvApply();SND.play(S.hint);renderBar();}
+function rvAll(){const rv=P.rv;if(!rv||rv.step>=rv.max)return;rv.step=rv.max;rvApply();renderBar();}
 function renderChoices(){
   const el=$('#pCh');if(!el)return;const q=P.q;
   if(!isCL(q)||!P.choicesShown){el.hidden=true;el.innerHTML='';return;}
@@ -928,10 +1073,11 @@ function revealHint(k){
 }
 function nextHint(){const q=P.q;if(!q)return;const k=q.hints.findIndex((h,i)=>!P.revealed.has(i));if(k>=0)revealHint(k);}
 function showChoices(){if(!P.q||P.choicesShown)return;P.choicesShown=true;renderChoices();SND.play(S.hint);renderBar();}
+function toggleChoices(){const q=P.q;if(!isCL(q)||P.answerShown)return;if(P.choicesShown){P.choicesShown=false;renderChoices();renderBar();}else showChoices();}
 function toggleAnswer(quiet){
   const q=P.q;if(!q)return;
   P.answerShown=!P.answerShown;P.fx=false;
-  if(P.answerShown){P.running=false;if(isCL(q)&&!P.choicesShown){P.choicesShown=true;renderChoices();}if(!quiet)SND.play(S.ans);}
+  if(P.answerShown){P.running=false;rvAll();if(isCL(q)&&!P.choicesShown){P.choicesShown=true;renderChoices();}if(!quiet)SND.play(S.ans);}
   const chip=$('#pChip');
   if(isCL(q)){chip.hidden=!P.answerShown;chip.textContent=`こたえ ${corrLabel(q)}`;applyChoiceState();if(P.answerShown)sparkle();}
   const a=$('#pAns');
@@ -983,7 +1129,7 @@ function go(d){
   P.i=Math.max(-1,Math.min(n,P.i+d));renderPlay();
 }
 async function quitPlay(){
-  P.running=false;P.q=null;hideMark();
+  P.running=false;P.q=null;P.rv=null;if(rvRO){rvRO.disconnect();rvRO=null;}hideMark();
   if(P.returnTo==='editor'&&E.quiz){show('editor');renderList();renderForm();}
   else renderHome();
 }
@@ -998,8 +1144,9 @@ function renderBar(){
     const lab=P.running?'❚❚ とめる':(P.timeupDone?'↺ もういちど':(P.elapsed>0?'▶ つづける':'▶ スタート'));
     h+=`<button class="btn ${P.running?'':'primary'}" data-act="p-start">${lab}</button>`;
   }
+  if(P.rv&&P.rv.step<P.rv.max){const lab=q.reveal==='tiles'?'パネルを めくる':(q.reveal==='blur'?'はっきり させる':'ひいて みせる');h+=`<button class="btn" data-act="p-rv">${lab} <small>のこり${P.rv.max-P.rv.step}</small></button>`;}
   if(q.hints.length){const rem=q.hints.length-P.revealed.size;h+=`<button class="btn" data-act="p-hint" ${rem?'':'disabled'}>ヒント <small>のこり${rem}</small></button>`;}
-  if(isCL(q)&&!P.choicesShown)h+=`<button class="btn" data-act="p-choices">${R('選択肢','せんたくし')}を ${R('出','だ')}す</button>`;
+  if(isCL(q)&&!P.answerShown)h+=`<button class="btn" data-act="p-choices">${R('選択肢','せんたくし')}を ${P.choicesShown?'かくす':R('出','だ')+'す'}</button>`;
   if(hasAnswer())h+=`<button class="btn" data-act="p-answer">${P.answerShown?'こたえを かくす':'こたえ'}</button>`;
   h+=`<button class="btn primary" data-act="p-next">つぎ ▶</button>`;
   bar.innerHTML=h;
@@ -1019,6 +1166,7 @@ function frame(t){
   P.elapsed+=Math.min(raw,0.5);
   const q=P.q;
   q.hints.forEach((h,k)=>{if(h.mode==='time'&&!P.revealed.has(k)&&P.elapsed>=h.at)revealHint(k);});
+  if(P.rv&&q.rvMode==='time'&&P.rv.step<P.rv.max&&P.elapsed>=(P.rv.step+1)*q.rvEvery)rvNext();
   if(isCL(q)&&!P.choicesShown&&q.choicesShow==='time'&&P.elapsed>=q.choicesAt)showChoices();
   if(P.limit>0&&P.elapsed>=P.limit){P.elapsed=P.limit;drawTimer();timeUp();return;}
   drawTimer();
@@ -1033,6 +1181,8 @@ document.addEventListener('click',async e=>{
   const act=a.dataset.act,id=a.dataset.id;
   switch(act){
     case 'home-new':{const z=normQuiz({title:'あたらしい クイズ',settings:Object.assign({},DEF_SET),questions:[newQ()]});await DB.put(z);openEditor(z);break;}
+    case 'guide-open':openGuide();break;
+    case 'guide-close':closeGuide();break;
     case 'home-import':$('#jsonInput').click();break;
     case 'home-full':{const d=document.documentElement;try{const f=d.requestFullscreen||d.webkitRequestFullscreen;if(f){const r=f.call(d);if(r&&r.catch)r.catch(()=>toast(`${R('全画面','ぜんがめん')}に できなかったよ`));}else toast(`この ブラウザは ${R('全画面','ぜんがめん')}に できないよ`);}catch(err){toast(`${R('全画面','ぜんがめん')}に できなかったよ`);}break;}
     case 'quiz-play':{const z=await DB.get(id);if(z)openPlay(z,-1,'home');break;}
@@ -1057,7 +1207,8 @@ document.addEventListener('click',async e=>{
     case 'p-again':P.i=-1;P.marks={};renderPlay();break;
     case 'p-start':P.running?pauseTimer():startTimer();break;
     case 'p-hint':nextHint();break;
-    case 'p-choices':showChoices();break;
+    case 'p-choices':toggleChoices();break;
+    case 'p-rv':rvNext();break;
     case 'p-answer':toggleAnswer();break;
     case 'owl-ans':if(hasAnswer())toggleAnswer();break;
     case 'test-o':playOX('o',E.quiz.settings.oxSound);break;
@@ -1068,18 +1219,25 @@ document.addEventListener('click',async e=>{
   }
 });
 document.addEventListener('keydown',e=>{
-  if($('#play').hidden)return;
+  if($('#play').hidden||!$('#guide').hidden)return;
   const k=e.key;
   if(k===' '){e.preventDefault();if(hasTimeWork())P.running?pauseTimer():startTimer();}
   else if(k==='ArrowRight'||k==='PageDown'){e.preventDefault();go(1);}
   else if(k==='ArrowLeft'||k==='PageUp'){e.preventDefault();go(-1);}
   else if(/^[hH]$/.test(k))nextHint();
   else if(/^[aA]$/.test(k)||k==='Enter'){if(hasAnswer())toggleAnswer();}
-  else if(/^[cC]$/.test(k))showChoices();
+  else if(/^[cC]$/.test(k))toggleChoices();
+  else if(/^[iI]$/.test(k))rvNext();
   else if(/^[oO]$/.test(k))mark('o');
   else if(/^[xX]$/.test(k))mark('x');
   else if(k==='Escape')hideMark();
 });
+
+/* ===== 使い方 ===== */
+function openGuide(){const g=$('#guide');g.hidden=false;const b=$('.gbody',g);if(b)b.scrollTop=0;}
+function closeGuide(){$('#guide').hidden=true;lsSet('quizis-guide','1');}
+document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!$('#guide').hidden)closeGuide();});
+$('#guide').addEventListener('click',e=>{if(e.target.id==='guide')closeGuide();});
 
 /* ===== はじめ ===== */
 (async()=>{
@@ -1087,6 +1245,7 @@ document.addEventListener('keydown',e=>{
   const list=await DB.all();
   if(!list.length&&!lsGet('quizis-seeded')){await DB.put(sampleQuiz());lsSet('quizis-seeded','1');}
   renderHome();
+  if(!lsGet('quizis-guide'))openGuide();
 })();
 </script>
 </body>
