@@ -2,7 +2,7 @@
 <html lang="ja">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="claude:viewport-fit-sides" content="cover">
 <title>quizis クイズ</title>
@@ -186,8 +186,9 @@ textarea:focus,.tin:focus,.etitle:focus,.stepper input:focus{outline:3px solid v
 .tbar{flex:1 0 100%;height:clamp(14px,2.6vmin,30px);background:var(--panel);border:2px solid var(--line);border-radius:999px;overflow:hidden}
 .tbar i{display:block;height:100%;background:var(--accent);border-radius:999px}
 .tbar i.low{background:var(--timer)}
-.pbody{display:grid;grid-template-columns:minmax(0,1fr);gap:2vmin;min-height:0}
-.pbody.has-hints{grid-template-columns:minmax(0,1fr) minmax(0,30%)}
+.pbody{display:grid;grid-template-columns:minmax(0,1fr) 0px;column-gap:0;row-gap:2vmin;min-height:0;transition:grid-template-columns .5s ease,column-gap .5s ease}
+.pbody.has-hints{grid-template-columns:minmax(0,1fr) minmax(0,30%);column-gap:2vmin}
+.pbody>.intro{grid-column:1/-1}
 .pmain{display:grid;grid-template-rows:minmax(0,1fr) auto;gap:2vmin;min-height:0}
 .qbox{position:relative;background:var(--panel);border:3px solid var(--line);border-radius:2.4vmin;display:flex;gap:3vmin;padding:2.6vmin;min-height:0;overflow:hidden}
 .qimg{flex:1 1 50%;min-width:0;min-height:0;display:flex;align-items:center;justify-content:center}
@@ -196,8 +197,8 @@ textarea:focus,.tin:focus,.etitle:focus,.stepper input:focus{outline:3px solid v
 .rv{position:relative;overflow:hidden;border-radius:1.2vmin;flex:none}
 .qimg .rv img{width:100%;height:100%;max-width:none;max-height:none;display:block;border-radius:0;transition:filter .7s ease,transform .9s ease}
 .tiles{position:absolute;inset:-1px;display:grid;gap:0}
-.tile{background:var(--tile);box-shadow:inset 0 0 0 .3vmin rgba(255,255,255,.5);display:grid;place-items:center;color:rgba(255,255,255,.75);font-weight:700;font-size:clamp(18px,5vmin,70px);transition:opacity .5s ease,transform .5s ease}
-.tile.open{opacity:0;transform:scale(.6) rotate(-6deg)}
+.tile{cursor:pointer;background:var(--tile);box-shadow:inset 0 0 0 .3vmin rgba(255,255,255,.5);display:grid;place-items:center;color:rgba(255,255,255,.75);font-weight:700;font-size:clamp(18px,5vmin,70px);transition:opacity .5s ease,transform .5s ease}
+.tile.open{pointer-events:none;opacity:0;transform:scale(.6) rotate(-6deg)}
 .rvstep{position:absolute;right:1vmin;bottom:1vmin;background:var(--ink);color:#fff;font-weight:700;font-size:clamp(13px,2.2vmin,26px);border-radius:999px;padding:0 .7em;opacity:.85}
 .qtext{flex:1 1 50%;min-width:0;display:flex;align-items:center;overflow:auto;font-size:clamp(22px,5.4vmin,78px);font-weight:700;line-height:1.55}
 .qbox.noimg .qtext{justify-content:center;text-align:center;font-size:clamp(26px,6.8vmin,96px)}
@@ -281,11 +282,14 @@ textarea:focus,.tin:focus,.etitle:focus,.stepper input:focus{outline:3px solid v
 .markov.o b{color:var(--maru)} .markov.x b{color:var(--batsu)}
 #toast{position:fixed;left:50%;bottom:max(24px,env(safe-area-inset-bottom,0px));transform:translateX(-50%);z-index:100;background:var(--ink);color:#fff;
   padding:12px 20px;border-radius:12px;font-weight:700;max-width:calc(100% - 32px);text-align:center;animation:fade .2s}
+.pbody .hints{display:none}
+.pbody.has-hints .hints{display:flex}
 @keyframes pop{0%{transform:scale(.85);opacity:0}100%{transform:scale(1);opacity:1}}
 @keyframes fade{from{opacity:0}to{opacity:1}}
 @keyframes pulse{50%{transform:scale(1.08)}}
 @keyframes blink{0%,93%,100%{transform:scaleY(1)}95%{transform:scaleY(.08)}}
 @media (orientation:portrait){
+  .pbody{grid-template-columns:minmax(0,1fr)}
   .pbody.has-hints{grid-template-columns:minmax(0,1fr);grid-template-rows:minmax(0,1fr) auto}
   .pbody.has-hints .hints{max-height:28vh;flex-direction:row;flex-wrap:wrap}
   .pbody.has-hints .hint{flex:1 1 40%}
@@ -316,10 +320,10 @@ textarea:focus,.tin:focus,.etitle:focus,.stepper input:focus{outline:3px solid v
         <div><h1>クイズ</h1><p>quizis</p></div>
       </div>
       <div class="hact">
-        <button class="btn primary" data-act="home-new">＋ <ruby>新<rt>あたら</rt></ruby>しい クイズを つくる</button>
-        <button class="btn" data-act="home-import">ファイルから <ruby>読<rt>よ</rt></ruby>みこむ</button>
+        <button class="btn primary" data-act="home-new">＋ 新しい クイズを つくる</button>
+        <button class="btn" data-act="home-import">ファイルから 読みこむ</button>
         <button class="btn" data-act="guide-open">使い方</button>
-        <button class="btn" data-act="home-full"><ruby>全<rt>ぜん</rt></ruby><ruby>画面<rt>がめん</rt></ruby>にする</button>
+        <button class="btn" data-act="home-full">全画面にする</button>
       </div>
     </header>
     <div id="hList" class="qgrid"></div>
@@ -334,7 +338,7 @@ textarea:focus,.tin:focus,.etitle:focus,.stepper input:focus{outline:3px solid v
     <input id="eTitle" class="etitle" type="text" placeholder="クイズの なまえ" aria-label="クイズの なまえ">
     <span id="eStatus" class="estatus"></span>
     <button class="btn" data-act="furi-open">ふりがな</button>
-    <button class="btn" data-act="e-try">この <ruby>問題<rt>もんだい</rt></ruby>から ためす</button>
+    <button class="btn" data-act="e-try">この 問題から ためす</button>
     <button class="btn primary" data-act="e-export">ファイルにする</button>
     <div class="fpanel" id="fPanel" hidden>
       <span class="fword" id="fWord"></span><span>の よみ</span>
@@ -346,7 +350,7 @@ textarea:focus,.tin:focus,.etitle:focus,.stepper input:focus{outline:3px solid v
   <div class="ebody">
     <aside class="elist scroll">
       <div id="eList" style="display:grid;gap:4px"></div>
-      <button class="btn eadd" data-act="q-add">＋ <ruby>問題<rt>もんだい</rt></ruby>を ふやす</button>
+      <button class="btn eadd" data-act="q-add">＋ 問題を ふやす</button>
     </aside>
     <main id="eForm" class="eform scroll"></main>
   </div>
@@ -421,7 +425,9 @@ textarea:focus,.tin:focus,.etitle:focus,.stepper input:focus{outline:3px solid v
           <dt>画像をめくる</dt><dd>画像を少しずつ見せる問題で、次の段階に進めます。</dd>
           <dt>選択肢を出す／かくす</dt><dd>A〜D や ○× の問題で、選択肢の表示を切りかえます。まず自由に考えさせ、途中から選択肢を出すときに使います。</dd>
           <dt>こたえ</dt><dd>正解の選択肢が少し大きくなり、ほかはうすくなります。「えらんだ」印の選択肢が正解だったときは、紙ふぶきも出ます。答えの説明や画像を入れていれば、あわせて表示されます。</dd>
+          <dt>画像のパネル</dt><dd>「パネルをめくる」問題では、パネルを直接タッチしても開けられます。</dd>
           <dt>選択肢をタップ</dt><dd>出た答えに「えらんだ」の印をつけられます。もう一度タップで外れます。</dd>
+          <dt>拡大</dt><dd>二本指で広げると、画面を拡大できます（ダブルタップでは拡大しません）。</dd>
           <dt>おわる</dt><dd>まちがえて押しても大丈夫なように、2 回押すと終わります。</dd>
         </dl>
       </section>
@@ -505,7 +511,7 @@ textarea:focus,.tin:focus,.etitle:focus,.stepper input:focus{outline:3px solid v
 /* ===== 共通 ===== */
 const $=(s,r=document)=>r.querySelector(s);
 const $$=(s,r=document)=>[...r.querySelectorAll(s)];
-const R=(k,y)=>`<ruby>${k}<rt>${y}</rt></ruby>`;
+const R=(k,y)=>k; /* 画面の文字には ふりがなを つけない */
 const ABCD='ABCD';
 function esc(s){return String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
 const uid=()=>Date.now().toString(36)+Math.random().toString(36).slice(2,8);
@@ -534,8 +540,6 @@ function lsGet(k){try{return localStorage.getItem(k);}catch(e){return null;}}
 function lsSet(k,v){try{localStorage.setItem(k,v);}catch(e){}}
 
 /* ===== ズーム・意図しない動作の防止 ===== */
-document.addEventListener('gesturestart',e=>e.preventDefault(),{passive:false});
-document.addEventListener('gesturechange',e=>e.preventDefault(),{passive:false});
 let lastTouchEnd=0;
 document.addEventListener('touchend',e=>{
   const now=Date.now();
@@ -543,7 +547,8 @@ document.addEventListener('touchend',e=>{
   lastTouchEnd=now;
 },{passive:false});
 document.addEventListener('touchmove',e=>{
-  if(e.touches&&e.touches.length>1){e.preventDefault();return;}
+  if(e.touches&&e.touches.length>1)return; /* 二本指のズームは そのまま */
+  if(window.visualViewport&&window.visualViewport.scale>1.01)return; /* ズーム中は 一本指で うごかせる */
   if(!(e.target.closest&&e.target.closest('.scroll'))) e.preventDefault();
 },{passive:false});
 document.addEventListener('dblclick',e=>e.preventDefault());
@@ -976,7 +981,7 @@ function renderPlay(){
   P.choicesShown=!isCL(q)||q.choicesShow==='start';
   $('#pNo').hidden=false;$('#pNo').innerHTML=`${P.i+1}<small>／${qs.length}</small>`;
   const hasImg=!!q.image,hasText=!!plain(q.text);
-  body.className='pbody'+(q.hints.length?' has-hints':'');
+  body.className='pbody';
   body.innerHTML=`<div class="pmain">
       <div class="qbox ${hasImg?'':'noimg'} ${hasText?'':'notext'}">
         ${hasImg?(q.reveal!=='none'?`<div class="qimg" id="pQimg"><div class="rv" id="pRv"><img src="${esc(q.image)}" alt="" id="pRvImg"></div></div>`:`<div class="qimg"><img src="${esc(q.image)}" alt=""></div>`):''}
@@ -998,7 +1003,7 @@ function rvInit(){
   const q=P.q;if(!q||!q.image||q.reveal==='none')return;
   const n=q.reveal==='tiles'?q.tiles:5;
   const order=[...Array(n).keys()];for(let i=n-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[order[i],order[j]]=[order[j],order[i]];}
-  P.rv={step:0,max:n,order};
+  P.rv={step:0,max:n,order,open:new Set()};
   const box=$('#pRv'),img=$('#pRvImg');
   if(q.reveal==='tiles'){
     const side=Math.round(Math.sqrt(n));
@@ -1023,7 +1028,7 @@ function rvApply(){
   const q=P.q,rv=P.rv;if(!rv)return;
   const img=$('#pRvImg'),box=$('#pRv');if(!img)return;
   if(q.reveal==='tiles'){
-    const open=new Set(rv.order.slice(0,rv.step));
+    const open=rv.open;
     $$('#pRv .tile').forEach(t=>t.classList.toggle('open',open.has(+t.dataset.t)));
   }else if(q.reveal==='blur'){
     const w=box.clientWidth||600;img.style.filter=rv.step>=rv.max?'none':`blur(${(BLUR[rv.step]*w).toFixed(1)}px)`;
@@ -1033,8 +1038,16 @@ function rvApply(){
   }
   const st=$('#pRvStep');if(st){st.textContent=`${rv.step}／${rv.max}`;st.hidden=rv.step>=rv.max;}
 }
-function rvNext(){const rv=P.rv;if(!rv||rv.step>=rv.max)return;rv.step++;rvApply();SND.play(S.hint);renderBar();}
-function rvAll(){const rv=P.rv;if(!rv||rv.step>=rv.max)return;rv.step=rv.max;rvApply();renderBar();}
+function rvNext(t){
+  const rv=P.rv;if(!rv||rv.step>=rv.max)return;
+  if(P.q.reveal==='tiles'){
+    if(t==null)t=rv.order.find(i=>!rv.open.has(i));
+    if(t==null||rv.open.has(t))return;
+    rv.open.add(t);rv.step=rv.open.size;
+  }else rv.step++;
+  rvApply();SND.play(S.hint);renderBar();
+}
+function rvAll(){const rv=P.rv;if(!rv||rv.step>=rv.max)return;rv.order.forEach(i=>rv.open.add(i));rv.step=rv.max;rvApply();renderBar();}
 function renderChoices(){
   const el=$('#pCh');if(!el)return;const q=P.q;
   if(!isCL(q)||!P.choicesShown){el.hidden=true;el.innerHTML='';return;}
@@ -1103,6 +1116,7 @@ function timeUp(){P.timeupDone=true;P.running=false;$('#pTup').hidden=false;SND.
 function revealHint(k){
   const q=P.q;if(!q||P.revealed.has(k))return;
   P.revealed.add(k);const h=q.hints[k];
+  $('#pBody').classList.add('has-hints');
   const el=$(`#pHints .hint[data-k="${k}"]`);
   if(el){el.className='hint';el.innerHTML=`<span class="hl">ヒント ${k+1}</span>${plain(h.text)?`<span class="ht">${fmt(h.text)}</span>`:''}${h.image?`<img src="${esc(h.image)}" alt="">`:''}`;
     if(el.scrollIntoView)el.scrollIntoView({block:'nearest',behavior:'smooth'});}
@@ -1192,6 +1206,7 @@ function renderBar(){
   h+=`<button class="btn primary" data-act="p-next">つぎ ▶</button>`;
   bar.innerHTML=h;
 }
+$('#pBody').addEventListener('pointerdown',e=>{const t=e.target.closest('.tile');if(t&&P.rv&&!t.classList.contains('open')){e.preventDefault();rvNext(+t.dataset.t);}});
 $('#pBody').addEventListener('click',e=>{
   const c=e.target.closest('.choice');if(!c||!P.q)return;
   const k=+c.dataset.k;P.selected=(P.selected===k)?-1:k;P.cardMark=null;P.missK=-1;applyChoiceState();
