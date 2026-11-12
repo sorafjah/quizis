@@ -125,6 +125,7 @@ button{font-family:var(--font);color:var(--ink)}
 .li.on{border-color:var(--accent);background:var(--accent-soft)}
 .li .lin{width:30px;height:30px;border-radius:50%;background:var(--ink);color:#fff;display:grid;place-items:center;font-weight:700;font-size:14px}
 .li.set .lin{background:var(--sub)}
+.li .lin.pg{border-radius:8px;background:var(--accent)}
 .li .lit{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .li .lit.ph{color:var(--sub)}
 .li .lim{font-size:12px;color:var(--sub);white-space:nowrap}
@@ -203,6 +204,14 @@ textarea:focus,.tin:focus,.etitle:focus,.stepper input:focus{outline:3px solid v
 .qtext{flex:1 1 50%;min-width:0;display:flex;align-items:center;overflow:auto;font-size:clamp(22px,5.4vmin,78px);font-weight:700;line-height:1.55}
 .qbox.noimg .qtext{justify-content:center;text-align:center;font-size:clamp(26px,6.8vmin,96px)}
 .qbox.notext .qimg{flex-basis:100%}
+.qbox.pg .qtext{white-space:normal}
+.qbox.pg.sz-l .qtext{font-size:clamp(30px,9vmin,130px)}
+.qbox.pg.sz-m .qtext{font-size:clamp(22px,5.4vmin,78px)}
+.qbox.pg.noimg.sz-m .qtext{font-size:clamp(26px,6.8vmin,96px)}
+.qbox.pg.sz-s .qtext{font-size:clamp(16px,3.6vmin,52px);line-height:1.7}
+.qbox.pg.al-center .qtext{justify-content:center;text-align:center}
+.qbox.pg.al-left .qtext{justify-content:flex-start;text-align:left}
+.qbox.pg.notext{justify-content:center}
 .apanel{position:absolute;inset:0;background:var(--panel);border:6px solid var(--ok);border-radius:2.2vmin;display:flex;flex-direction:column;padding:2.2vmin 3vmin;gap:1.4vmin;animation:pop .35s ease-out}
 .alabel{align-self:flex-start;background:var(--ok);color:#fff;font-weight:700;font-size:clamp(18px,3.4vmin,42px);border-radius:10px;padding:0 .6em}
 .abody{flex:1;min-height:0;display:flex;gap:3vmin;align-items:center;justify-content:center}
@@ -350,7 +359,7 @@ textarea:focus,.tin:focus,.etitle:focus,.stepper input:focus{outline:3px solid v
   <div class="ebody">
     <aside class="elist scroll">
       <div id="eList" style="display:grid;gap:4px"></div>
-      <button class="btn eadd" data-act="q-add">＋ 問題を ふやす</button>
+      <button class="btn eadd" data-act="q-add">＋ 問題・ページを ふやす</button>
     </aside>
     <main id="eForm" class="eform scroll"></main>
   </div>
@@ -405,6 +414,7 @@ textarea:focus,.tin:focus,.etitle:focus,.stepper input:focus{outline:3px solid v
       <section class="gsec">
         <h3><span class="gn">2</span>問題の作り方</h3>
         <dl class="gdl">
+          <dt>ページ</dt><dd>しゅるいで「ページ」を選ぶと、問題を出さずに文字や画像だけを見せる画面になります。表紙、説明、答え合わせ、まとめなどに使えます。文字も画像も、どちらも入れなくても大丈夫です。文字の大きさ（大・ふつう・小）と、ならび（まんなか・左そろえ）を選べます。ページにはタイマー・ヒント・こたえボタンは出ず、問題の番号にも数えません。</dd>
           <dt>答えかた</dt><dd>「A〜D から選ぶ（2〜4 択）」「○× クイズ」「選ばない（口で答える）」の 3 種類です。A〜D の選択肢には、文字と画像のどちらか、または両方を入れられます。</dd>
           <dt>画像</dt><dd>枠をタップ（クリック）して、写真やファイルから選びます。PC では、ドラッグ＆ドロップや、コピーした画像の貼り付け（Ctrl+V／⌘+V）でも入れられます。長い辺が 1280px になるよう自動で縮小されます。</dd>
           <dt>画像の見せかた</dt><dd>問題の画像は「パネルをめくる」「ぼかしがとれる」「アップから引いていく」で少しずつ見せられます。ボタンで進めるか、決めた秒数ごとに自動で進めるかを選べます。</dd>
@@ -632,7 +642,7 @@ function readImage(file){
 /* ===== データの形 ===== */
 const DEF_SET={time:30,timerStyle:'bar',autoStart:true,markStyle:'effect',markHold:3,oxMarkStyle:'effect',sound:true,oxSound:'quiz',hideBar:false};
 function newQ(){return{id:uid(),text:'',image:null,type:'choice',choiceCount:4,choices:[0,1,2,3].map(()=>({text:'',image:null})),correct:0,
-  choicesShow:'start',choicesAt:10,reveal:'none',tiles:9,zoomX:50,zoomY:50,rvMode:'time',rvEvery:5,answerText:'',answerImage:null,timeMode:'default',time:30,hints:[]};}
+  choicesShow:'start',choicesAt:10,reveal:'none',tiles:9,zoomX:50,zoomY:50,rvMode:'time',rvEvery:5,size:'m',align:'center',answerText:'',answerImage:null,timeMode:'default',time:30,hints:[]};}
 function normQ(q){
   const d=newQ();const o=Object.assign(d,q||{});
   if(!o.id)o.id=uid();
@@ -644,7 +654,8 @@ function normQ(q){
   o.choices.forEach(c=>{c.image=okImg(c.image);c.text=String(c.text||'');});
   o.hints.forEach(h=>{h.image=okImg(h.image);h.text=String(h.text||'');h.mode=h.mode==='time'?'time':'button';h.at=Math.max(1,+h.at||10);});
   ['text','answerText'].forEach(k=>{o[k]=String(o[k]||'');});
-  o.type=['choice','ox','free'].includes(o.type)?o.type:'choice';
+  o.type=['choice','ox','free','page'].includes(o.type)?o.type:'choice';
+  o.size=['s','m','l'].includes(o.size)?o.size:'m';o.align=o.align==='left'?'left':'center';
   fixQ(o);
   o.choicesShow=['start','button','time'].includes(o.choicesShow)?o.choicesShow:'start';
   o.reveal=['none','tiles','blur','zoom'].includes(o.reveal)?o.reveal:'none';o.tiles=[4,9,16].includes(+o.tiles)?+o.tiles:9;
@@ -661,7 +672,11 @@ const okImg=v=>(typeof v==='string'&&/^data:image\/(png|jpe?g|gif|webp|svg\+xml)
 function fixQ(q){const n=q.type==='ox'?2:q.choiceCount;if(!(q.correct>=0&&q.correct<n))q.correct=0;}
 const isCL=q=>!!q&&(q.type==='choice'||q.type==='ox');
 const corrLabel=q=>q.type==='ox'?(q.correct===1?'×':'○'):ABCD[q.correct];
-const effTime=(q,quiz)=>q.timeMode==='custom'?q.time:quiz.settings.time;
+const effTime=(q,quiz)=>q.type==='page'?0:(q.timeMode==='custom'?q.time:quiz.settings.time);
+const isPage=q=>!!q&&q.type==='page';
+const qCount=z=>z.questions.filter(q=>!isPage(q)).length;
+const pCount=z=>z.questions.filter(isPage).length;
+const qNum=(z,i)=>z.questions.slice(0,i+1).filter(q=>!isPage(q)).length;
 
 /* ===== サンプル ===== */
 const svgURI=s=>'data:image/svg+xml;charset=utf-8,'+encodeURIComponent(s);
@@ -676,6 +691,7 @@ const SV={
 };
 function sampleQuiz(){
   return normQuiz({id:'sample-1',sample:true,title:'ためしに つかう クイズ',settings:Object.assign({},DEF_SET),updated:Date.now(),questions:[
+    {type:'page',text:'ためしに つかう クイズ\nがんばって こたえてね',size:'l'},
     {text:'この くだものは なにかな？',image:SV.apple,type:'choice',choiceCount:4,reveal:'tiles',tiles:9,choicesShow:'button',
      choices:[{text:'りんご'},{text:'みかん'},{text:'ぶどう'},{text:'バナナ'}],correct:0,
      hints:[{text:'あかい いろを しているよ',mode:'time',at:8},{text:'「り」で はじまるよ',mode:'button',at:15}]},
@@ -689,6 +705,8 @@ function sampleQuiz(){
     {text:'1週間《しゅうかん》は なん日 かな？',image:SV.cal,type:'choice',choiceCount:4,choicesShow:'button',
      choices:[{text:'5日'},{text:'6日'},{text:'7日'},{text:'10日'}],correct:2,
      hints:[{text:'月《げつ》・火《か》・水《すい》… と かぞえてみよう',mode:'button',at:10}]}
+  ,
+    {type:'page',text:'おつかれさま！\nつぎの クイズも たのしみに していてね',image:SV.fuji,size:'m'}
   ]});
 }
 
@@ -713,7 +731,7 @@ async function renderHome(){
       <div class="qthumb">${th?`<img src="${esc(th)}" alt="">`:'<span class="noimg">？</span>'}</div>
       <div class="qinfo">
         <h2>${fmt(z.title)||'クイズ'}</h2>
-        <div class="qmeta"><span>${z.questions.length}もん</span><span>${d.getMonth()+1}月${d.getDate()}日</span>${z.sample?'<span>サンプル</span>':''}</div>
+        <div class="qmeta"><span>${qCount(z)}もん${pCount(z)?`＋${pCount(z)}ページ`:''}</span><span>${d.getMonth()+1}月${d.getDate()}日</span>${z.sample?'<span>サンプル</span>':''}</div>
         <div class="qbtns">
           <button class="btn primary" data-act="quiz-play" data-id="${esc(z.id)}">▶ はじめる</button>
           <button class="btn sm" data-act="quiz-edit" data-id="${esc(z.id)}">つくる・なおす</button>
@@ -761,9 +779,10 @@ function renderList(){
     `<button class="li set ${E.qi<0?'on':''}" data-act="e-pick" data-i="-1"><span class="lin">⚙</span><span class="lit">クイズ${R('全体','ぜんたい')}の ${R('設定','せってい')}</span><span class="lim">${secText(z.settings.time)}</span></button>`+
     z.questions.map((q,i)=>{
       const t=plain(q.text);
-      return `<button class="li ${E.qi===i?'on':''}" data-act="e-pick" data-i="${i}"><span class="lin">${i+1}</span>
-        <span class="lit ${t?'':'ph'}">${t?esc(t):`（まだ ${R('書','か')}いていないよ）`}</span>
-        <span class="lim">${q.image?`<img src="${esc(q.image)}" alt="">`:(q.type==='choice'?'ABCD':q.type==='ox'?'○×':'くち')}</span></button>`;
+      const pg=isPage(q);
+      return `<button class="li ${E.qi===i?'on':''}" data-act="e-pick" data-i="${i}"><span class="lin ${pg?'pg':''}">${pg?'P':qNum(z,i)}</span>
+        <span class="lit ${t?'':'ph'}">${t?esc(t):(pg?(q.image?'（もじなし）':'（まだ ありません）'):`（まだ ${R('書','か')}いていないよ）`)}</span>
+        <span class="lim">${q.image?`<img src="${esc(q.image)}" alt="">`:(pg?'ページ':q.type==='choice'?'ABCD':q.type==='ox'?'○×':'くち')}</span></button>`;
     }).join('');
   const on=$('#eList .li.on');if(on&&on.scrollIntoView)on.scrollIntoView({block:'nearest'});
 }
@@ -807,7 +826,7 @@ function renderForm(){
   }
   const q=z.questions[E.qi];
   if(!q){f.innerHTML=`<div class="empty">${R('問題','もんだい')}が ないよ。「＋ ${R('問題','もんだい')}を ふやす」を おしてね。</div>`;return;}
-  const isC=q.type==='choice',isOX=q.type==='ox',isL=isC||isOX;
+  const isC=q.type==='choice',isOX=q.type==='ox',isL=isC||isOX,isPg=isPage(q);
   const choiceRows=isC?q.choices.slice(0,q.choiceCount).map((c,k)=>`
     <div class="crowe ${q.correct===k?'isc':''}">
       <span class="clet" style="background:var(--c${ABCD[k]})">${ABCD[k]}</span>
@@ -815,11 +834,25 @@ function renderForm(){
       <button type="button" class="cok ${q.correct===k?'on':''}" data-act="set-correct" data-k="${k}">${q.correct===k?'✓ ':''}${R('正解','せいかい')}</button>
     </div>`).join(''):'';
   f.innerHTML=`
-  <div class="fhead"><h2>${E.qi+1}もんめ</h2>
+  <div class="fhead"><h2>${isPg?'ページ':qNum(z,E.qi)+'もんめ'}</h2>
     <button class="btn sm sq" data-act="q-up" aria-label="うえへ" ${E.qi===0?'disabled':''}>↑</button>
     <button class="btn sm sq" data-act="q-down" aria-label="したへ" ${E.qi===z.questions.length-1?'disabled':''}>↓</button>
     <button class="btn sm" data-act="q-dup">コピー</button>
-    <button class="btn sm warn" data-act="q-del">この ${R('問題','もんだい')}を ${R('消','け')}す</button></div>
+    <button class="btn sm warn" data-act="q-del">この ${isPg?'ページ':R('問題','もんだい')}を ${R('消','け')}す</button></div>
+  <section class="fsec">
+    <h3>しゅるい</h3>
+    ${seg('type',q.type,[['choice',`A〜Dから えらぶ`],['ox','○× クイズ'],['free',`えらばない（${R('口','くち')}で こたえる）`],['page','ページ（ひょうし・かいせつ など）']])}
+    ${isPg?`<span class="note">ページは、もんだいを 出さずに 文字や 画像だけを 見せる 画面だよ。タイマー・ヒント・こたえボタンは 出ないよ。ひょうし、せつめい、こたえあわせ などに つかってね。</span>`:''}
+  </section>
+  ${isPg?`<section class="fsec">
+    <h3>ページの ないよう <span class="note">どちらも 入れなくても いいよ</span></h3>
+    <div class="frow"><span class="lab">もじ</span><textarea data-f="text" style="min-height:130px" placeholder="れい：ふくろうクイズ&#10;（ぎょうを かえると、そのまま かわるよ）">${esc(q.text)}</textarea>${rp(q.text)}
+      <span class="note">ふりがな：ことばを えらんで、うえの「ふりがな」ボタンを おしてね</span></div>
+    <div class="frow"><span class="lab">${R('画像','がぞう')}</span>${imgSlot('image',q.image)}</div>
+    <div class="frow"><span class="lab">もじの おおきさ</span>${seg('size',q.size,[['l','おおきい（ひょうし）'],['m','ふつう'],['s','ちいさい（ながい せつめい）']])}</div>
+    <div class="frow"><span class="lab">もじの ならび</span>${seg('align',q.align,[['center','まんなか'],['left','ひだりそろえ']])}</div>
+  </section>`:''}
+${isPg?'':`
   <section class="fsec">
     <h3>${R('問題','もんだい')}</h3>
     <div class="frow"><span class="lab">${R('問題文','もんだいぶん')}</span><textarea data-f="text" placeholder="れい：この ${R('人','ひと')}の しごとは なにかな？">${esc(q.text)}</textarea>${rp(q.text)}
@@ -832,9 +865,8 @@ function renderForm(){
         ${q.rvMode==='time'?stepper('rvEvery',q.rvEvery,1,120,1,'秒ごと'):''}
         <span class="note">${q.reveal==='tiles'?`パネル 1まいずつ`:'5かいに わけて'} すすむよ。「こたえ」を おすと ぜんぶ ${R('見','み')}えるよ。${q.rvMode==='time'?'タイマーが うごいている あいだ すすむよ。':''}</span></div>`:''}`:''}
   </section>
-  <section class="fsec">
-    <h3>こたえかた</h3>
-    ${seg('type',q.type,[['choice',`A〜Dから えらぶ`],['ox','○× クイズ'],['free',`えらばない（${R('口','くち')}で こたえる）`]])}
+  ${isL?`<section class="fsec">
+    <h3>${isOX?'せいかい':'こたえかた'}</h3>
     ${isOX?`<div class="frow"><span class="lab">${R('正解','せいかい')}は どっち？</span>${seg('correct',q.correct,[['0','○ が '+R('正解','せいかい')],['1','× が '+R('正解','せいかい')]])}</div>`:''}
     ${isC?`
       <div class="frow"><span class="lab">${R('選択肢','せんたくし')}の かず</span>${seg('choiceCount',q.choiceCount,[['2','2こ（A・B）'],['3','3こ（A〜C）'],['4','4こ（A〜D）']])}</div>
@@ -843,7 +875,7 @@ function renderForm(){
       <div class="frow"><span class="lab">${R('選択肢','せんたくし')}を ${R('出','だ')}すとき</span>${seg('choicesShow',q.choicesShow,[['start','はじめから'],['button','ボタンを おしたら'],['time',`${R('時間','じかん')}が たったら`]])}
         ${q.choicesShow==='time'?stepper('choicesAt',q.choicesAt,1,600,1,'秒たったら'):''}
         <span class="note">あとから ${R('出','だ')}すと、まず ${R('自分','じぶん')}で かんがえてから えらぶ ${R('問題','もんだい')}に なるよ。どれに しても、${R('出題','しゅつだい')}${R('中','ちゅう')}に「${R('選択肢','せんたくし')}を ${R('出','だ')}す／かくす」ボタンで いつでも きりかえられるよ。</span></div>`:''}
-  </section>
+  </section>`:''}
   <section class="fsec">
     <h3>こたえ${isL?'の せつめい（なくても いいよ）':''}</h3>
     <div class="frow"><input class="tin" type="text" data-f="answerText" value="${esc(q.answerText)}" placeholder="${isL?'れい：あかくて まるい くだものだね':'れい：けいさつかん'}">${rp(q.answerText)}</div>
@@ -868,7 +900,7 @@ function renderForm(){
           ${h.mode==='time'?stepper(`hints.${k}.at`,h.at,1,600,1,'秒たったら'):''}</div>
       </div>`).join('')}
     <div><button class="btn" data-act="hint-add">＋ ヒントを ふやす</button></div>
-  </section>`;
+  </section>`}`;
 }
 async function setImg(obj,path,file){
   try{const d=await readImage(file);setPath(obj,path,d);touch();renderForm();renderList();}
@@ -970,20 +1002,23 @@ function renderPlay(){
   if(P.i<0||P.i>=qs.length){
     P.q=null;$('#pNo').hidden=true;$('#pTimer').hidden=true;$('#pTbar').hidden=true;body.className='pbody';
     if(P.i<0){
-      body.innerHTML=`<div class="intro"><div class="ititle">${fmt(z.title)||'クイズ'}</div><div class="isub">ぜんぶで ${qs.length}もん</div></div>`;
+      body.innerHTML=`<div class="intro"><div class="ititle">${fmt(z.title)||'クイズ'}</div><div class="isub">ぜんぶで ${qCount(z)}もん</div></div>`;
     }else{
       const o=Object.values(P.marks).filter(v=>v==='o').length;
-      body.innerHTML=`<div class="intro"><div class="ititle">おしまい！</div><div class="isub">${o?`○が ついた ${R('問題','もんだい')} ${o}もん（ぜんぶで ${qs.length}もん）`:'よく がんばったね'}</div></div>`;
+      body.innerHTML=`<div class="intro"><div class="ititle">おしまい！</div><div class="isub">${o?`○が ついた ${R('問題','もんだい')} ${o}もん（ぜんぶで ${qCount(z)}もん）`:'よく がんばったね'}</div></div>`;
     }
     renderBar();return;
   }
-  const q=qs[P.i];P.q=q;P.limit=effTime(q,z)||0;
+  const q0=qs[P.i];
+  /* ページは タイマー・ヒント・こたえを つかわない */
+  const q=isPage(q0)?Object.assign({},q0,{hints:[],reveal:'none',answerText:'',answerImage:null}):q0;
+  P.q=q;P.limit=effTime(q,z)||0;
   P.choicesShown=!isCL(q)||q.choicesShow==='start';
-  $('#pNo').hidden=false;$('#pNo').innerHTML=`${P.i+1}<small>／${qs.length}</small>`;
+  $('#pNo').hidden=isPage(q);$('#pNo').innerHTML=`${qNum(z,P.i)}<small>／${qCount(z)}</small>`;
   const hasImg=!!q.image,hasText=!!plain(q.text);
   body.className='pbody';
   body.innerHTML=`<div class="pmain">
-      <div class="qbox ${hasImg?'':'noimg'} ${hasText?'':'notext'}">
+      <div class="qbox ${hasImg?'':'noimg'} ${hasText?'':'notext'} ${isPage(q)?`pg sz-${q.size} al-${q.align}`:''}">
         ${hasImg?(q.reveal!=='none'?`<div class="qimg" id="pQimg"><div class="rv" id="pRv"><img src="${esc(q.image)}" alt="" id="pRvImg"></div></div>`:`<div class="qimg"><img src="${esc(q.image)}" alt=""></div>`):''}
         ${hasText?`<div class="qtext"><div>${fmt(q.text)}</div></div>`:''}
         <div class="apanel" id="pAns" hidden></div>
@@ -1150,8 +1185,9 @@ function sparkle(){
   fx.innerHTML=h;c.appendChild(fx);setTimeout(()=>fx.remove(),1400);
 }
 function fxMode(){const q=P.q;if(!isCL(q))return false;return q.type==='ox'?P.quiz.settings.oxMarkStyle!=='big':P.quiz.settings.markStyle==='effect';}
-function hasAnswer(){const q=P.q;return q&&(isCL(q)||plain(q.answerText)||q.answerImage);}
+function hasAnswer(){const q=P.q;return q&&!isPage(q)&&(isCL(q)||plain(q.answerText)||q.answerImage);}
 function mark(kind){
+  if(isPage(P.q))return; /* ページには ○× を つけない */
   if(P.q)P.marks[P.i]=kind;
   playOX(kind);
   if(fxMode()){
