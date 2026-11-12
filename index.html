@@ -123,9 +123,9 @@ button{font-family:var(--font);color:var(--ink)}
 .li{display:grid;grid-template-columns:34px minmax(0,1fr) auto;gap:8px;align-items:center;text-align:left;width:100%;min-height:52px;
   padding:6px 8px;border-radius:10px;border:2px solid transparent;background:transparent;cursor:pointer;font-size:15px}
 .li.on{border-color:var(--accent);background:var(--accent-soft)}
-.li .lin{width:30px;height:30px;border-radius:50%;background:var(--ink);color:#fff;display:grid;place-items:center;font-weight:700;font-size:14px}
-.li.set .lin{background:var(--sub)}
-.li .lin.pg{border-radius:8px;background:var(--accent)}
+.li .lin{width:30px;height:30px;border-radius:50%;background:var(--accent-soft);color:var(--accent);border:2px solid var(--accent);display:grid;place-items:center;font-weight:700;font-size:14px}
+.li.set .lin{background:var(--sub);border-color:var(--sub);color:#fff}
+.li .lin.pg{border-radius:8px;background:var(--accent);color:#fff}
 .li .lit{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .li .lit.ph{color:var(--sub)}
 .li .lim{font-size:12px;color:var(--sub);white-space:nowrap}
@@ -170,28 +170,30 @@ textarea:focus,.tin:focus,.etitle:focus,.stepper input:focus{outline:3px solid v
 .hcard .hh b{flex:1;color:var(--hint-ink)}
 
 /* ---------- 出題 ---------- */
-#play{display:grid;grid-template-rows:auto minmax(0,1fr) auto;gap:1.6vmin;background:var(--bg)}
-.ph{display:flex;align-items:center;flex-wrap:wrap;gap:1.4vmin 2vmin;min-height:9vmin}
-.qno{font-weight:700;font-size:clamp(20px,4.4vmin,56px);background:var(--ink);color:#fff;border-radius:999px;padding:.1em .7em;line-height:1.3;font-variant-numeric:tabular-nums}
-.qno small{font-size:.58em;opacity:.8;margin-left:.15em}
-.ptitle{flex:1 1 0;min-width:0;font-size:clamp(14px,2.4vmin,30px);color:var(--sub);font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.achip{font-size:clamp(18px,3.6vmin,44px);font-weight:700;background:var(--ok);color:#fff;border-radius:12px;padding:.1em .6em}
-.tup{font-size:clamp(18px,3.6vmin,44px);font-weight:700;background:var(--panel);border:3px solid var(--timer);color:var(--timer);border-radius:12px;padding:0 .5em;animation:pulse 1.4s ease-in-out 3}
-.timer{display:flex;align-items:center;gap:1.4vmin}
-.timer .pie{width:clamp(60px,13vmin,160px);height:clamp(60px,13vmin,160px)}
-.timer .num{font-size:clamp(26px,6.4vmin,90px);font-weight:700;font-variant-numeric:tabular-nums;line-height:1;white-space:nowrap}
+#play{display:grid;grid-template-rows:auto minmax(0,1fr) auto;gap:1vmin;background:var(--bg);
+  padding-top:max(6px,env(safe-area-inset-top,0px));padding-bottom:max(4px,env(safe-area-inset-bottom,0px))}
+.ph{display:flex;align-items:center;flex-wrap:nowrap;gap:1.4vmin;min-height:0}
+.ph>*{flex:none}
+.qno{order:1;font-weight:700;font-size:clamp(17px,3.6vmin,46px);background:var(--accent-soft);color:var(--accent);border:2px solid var(--accent);border-radius:999px;padding:0 .7em;line-height:1.35;font-variant-numeric:tabular-nums}
+.qno small{font-size:.58em;margin-left:.15em}
+.ptitle{order:2;flex:1 1 0!important;min-width:0;font-size:clamp(13px,2.2vmin,28px);color:var(--sub);font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.achip{order:6;font-size:clamp(16px,3vmin,38px);line-height:1.4;font-weight:700;background:var(--ok);color:#fff;border-radius:12px;padding:.1em .6em}
+.tup{order:5;font-size:clamp(16px,3vmin,38px);line-height:1.3;font-weight:700;background:var(--panel);border:3px solid var(--timer);color:var(--timer);border-radius:12px;padding:0 .5em;animation:pulse 1.4s ease-in-out 3}
+.timer{order:4;display:flex;align-items:center;gap:1vmin}
+.timer .pie{width:clamp(38px,7.2vmin,92px);height:clamp(38px,7.2vmin,92px)}
+.timer .num{font-size:clamp(20px,4.6vmin,64px);font-weight:700;font-variant-numeric:tabular-nums;line-height:1;white-space:nowrap}
 .timer .num small{font-size:.45em;margin-left:.08em}
-.timer.s-num .num{font-size:clamp(34px,9vmin,130px)}
-.timer.s-bar .num{font-size:clamp(22px,4.6vmin,64px)}
+.timer.s-num .num{font-size:clamp(26px,6vmin,84px)}
+.timer.s-bar .num{font-size:clamp(18px,3.8vmin,52px)}
 .timer.done{opacity:.45}
-.tbar{flex:1 0 100%;height:clamp(14px,2.6vmin,30px);background:var(--panel);border:2px solid var(--line);border-radius:999px;overflow:hidden}
+.tbar{order:3;flex:2 1 0!important;min-width:60px;height:clamp(12px,2.2vmin,26px);background:var(--panel);border:2px solid var(--line);border-radius:999px;overflow:hidden}
 .tbar i{display:block;height:100%;background:var(--accent);border-radius:999px}
 .tbar i.low{background:var(--timer)}
-.pbody{display:grid;grid-template-columns:minmax(0,1fr) 0px;column-gap:0;row-gap:2vmin;min-height:0;transition:grid-template-columns .5s ease,column-gap .5s ease}
+.pbody{display:grid;grid-template-columns:minmax(0,1fr) 0px;column-gap:0;row-gap:1.2vmin;min-height:0;transition:grid-template-columns .5s ease,column-gap .5s ease}
 .pbody.has-hints{grid-template-columns:minmax(0,1fr) minmax(0,30%);column-gap:2vmin}
 .pbody>.intro{grid-column:1/-1}
-.pmain{display:grid;grid-template-rows:minmax(0,1fr) auto;gap:2vmin;min-height:0}
-.qbox{position:relative;background:var(--panel);border:3px solid var(--line);border-radius:2.4vmin;display:flex;gap:3vmin;padding:2.6vmin;min-height:0;overflow:hidden}
+.pmain{display:grid;grid-template-rows:minmax(0,1fr) auto;gap:1.4vmin;min-height:0}
+.qbox{position:relative;background:var(--panel);border:3px solid var(--line);border-radius:2.4vmin;display:flex;gap:3vmin;padding:2vmin;min-height:0;overflow:hidden}
 .qimg{flex:1 1 50%;min-width:0;min-height:0;display:flex;align-items:center;justify-content:center}
 .qimg img{max-width:100%;max-height:100%;object-fit:contain;border-radius:1.2vmin}
 .qimg{position:relative}
@@ -204,6 +206,10 @@ textarea:focus,.tin:focus,.etitle:focus,.stepper input:focus{outline:3px solid v
 .qtext{flex:1 1 50%;min-width:0;display:flex;align-items:center;overflow:auto;font-size:clamp(22px,5.4vmin,78px);font-weight:700;line-height:1.55}
 .qbox.noimg .qtext{justify-content:center;text-align:center;font-size:clamp(26px,6.8vmin,96px)}
 .qbox.notext .qimg{flex-basis:100%}
+.qbox.lay-top{flex-direction:column;gap:1.4vmin}
+.qbox.lay-top .qimg{flex:1 1 0}
+.qbox.lay-top .qtext{flex:0 0 auto;max-height:42%;justify-content:center;text-align:center;font-size:clamp(20px,4.6vmin,66px)}
+.qbox.lay-top.notext .qimg{flex-basis:auto}
 .qbox.pg .qtext{white-space:normal}
 .qbox.pg.sz-l .qtext{font-size:clamp(30px,9vmin,130px)}
 .qbox.pg.sz-m .qtext{font-size:clamp(22px,5.4vmin,78px)}
@@ -272,17 +278,17 @@ textarea:focus,.tin:focus,.etitle:focus,.stepper input:focus{outline:3px solid v
 .intro{display:grid;place-items:center;align-content:center;gap:3vmin;text-align:center;background:var(--panel);border:3px solid var(--line);border-radius:2.4vmin;padding:4vmin}
 .ititle{font-size:clamp(30px,8.4vmin,120px);font-weight:700;line-height:1.4;text-wrap:balance}
 .isub{font-size:clamp(20px,4.4vmin,60px);font-weight:700;color:var(--sub)}
-.pf{display:flex;align-items:flex-end;gap:2vmin;position:relative;z-index:40}
-.owl{position:relative;width:clamp(200px,24vmin,270px);aspect-ratio:200/130;flex:none}
+.pf{display:flex;align-items:flex-end;gap:1.4vmin;position:relative;z-index:40}
+.owl{position:relative;width:clamp(122px,14vmin,170px);aspect-ratio:200/130;flex:none}
 .owl svg{width:100%;height:100%;display:block}
 .owl .pupils{transform-box:fill-box;transform-origin:center;animation:blink 6.5s infinite}
 .oz{position:absolute;border:0;background:transparent;padding:0;cursor:pointer;border-radius:12%}
 .oz.o{left:1%;top:1%;width:30%;height:50%} .oz.x{left:69%;top:1%;width:30%;height:50%}
 .oz.h{left:37%;top:18%;width:26%;height:36%;border-radius:50%} .oz.b{left:38%;top:61%;width:24%;height:30%;border-radius:45%}
 .owlmap .oz{background:rgba(31,43,59,.12);border:2px dashed var(--ink);color:var(--ink);font-weight:700;font-size:13px;display:grid;place-items:center;cursor:default;line-height:1.2}
-.bar{flex:1;display:flex;justify-content:flex-end;align-items:center;flex-wrap:wrap;gap:1.2vmin;min-width:0}
+.bar{flex:1;display:flex;justify-content:flex-end;align-items:center;flex-wrap:wrap;gap:1vmin;min-width:0}
 .bar.hide{visibility:hidden}
-.bar .btn{min-height:clamp(52px,7vmin,72px);font-size:clamp(16px,2.4vmin,26px);padding:0 clamp(14px,2vmin,26px)}
+.bar .btn{min-height:clamp(44px,5.6vmin,58px);font-size:clamp(14px,2vmin,21px);padding:0 clamp(8px,1.25vmin,16px);gap:4px}
 .bar .btn small{font-size:.72em;font-weight:400}
 .bar .sp{flex:1}
 .markov{position:absolute;inset:0;z-index:30;display:grid;place-items:center;align-content:center;gap:1vmin;background:rgba(242,245,250,.6);animation:fade .2s}
@@ -417,6 +423,7 @@ textarea:focus,.tin:focus,.etitle:focus,.stepper input:focus{outline:3px solid v
           <dt>ページ</dt><dd>しゅるいで「ページ」を選ぶと、問題を出さずに文字や画像だけを見せる画面になります。表紙、説明、答え合わせ、まとめなどに使えます。文字も画像も、どちらも入れなくても大丈夫です。文字の大きさ（大・ふつう・小）と、ならび（まんなか・左そろえ）を選べます。ページにはタイマー・ヒント・こたえボタンは出ず、問題の番号にも数えません。</dd>
           <dt>答えかた</dt><dd>「A〜D から選ぶ（2〜4 択）」「○× クイズ」「選ばない（口で答える）」の 3 種類です。A〜D の選択肢には、文字と画像のどちらか、または両方を入れられます。</dd>
           <dt>画像</dt><dd>枠をタップ（クリック）して、写真やファイルから選びます。PC では、ドラッグ＆ドロップや、コピーした画像の貼り付け（Ctrl+V／⌘+V）でも入れられます。長い辺が 1280px になるよう自動で縮小されます。</dd>
+          <dt>画像の位置</dt><dd>問題の画像は、文字の左か上のどちらかに並べられます。画像を入れると選べます。</dd>
           <dt>画像の見せかた</dt><dd>問題の画像は「パネルをめくる」「ぼかしがとれる」「アップから引いていく」で少しずつ見せられます。ボタンで進めるか、決めた秒数ごとに自動で進めるかを選べます。</dd>
           <dt>選択肢を出すタイミング</dt><dd>「はじめから」「ボタンを押したら」「時間がたったら」から選べます。どれにしても、出題中に「選択肢を出す／かくす」ボタンでいつでも切りかえられます。</dd>
           <dt>ヒント</dt><dd>いくつでも追加できます。それぞれ「ボタンで出す」か「○秒たったら自動で出す」かを選べます。</dd>
@@ -642,7 +649,7 @@ function readImage(file){
 /* ===== データの形 ===== */
 const DEF_SET={time:30,timerStyle:'bar',autoStart:true,markStyle:'effect',markHold:3,oxMarkStyle:'effect',sound:true,oxSound:'quiz',hideBar:false};
 function newQ(){return{id:uid(),text:'',image:null,type:'choice',choiceCount:4,choices:[0,1,2,3].map(()=>({text:'',image:null})),correct:0,
-  choicesShow:'start',choicesAt:10,reveal:'none',tiles:9,zoomX:50,zoomY:50,rvMode:'time',rvEvery:5,size:'m',align:'center',answerText:'',answerImage:null,timeMode:'default',time:30,hints:[]};}
+  choicesShow:'start',choicesAt:10,reveal:'none',tiles:9,zoomX:50,zoomY:50,rvMode:'time',rvEvery:5,size:'m',align:'center',layout:'side',answerText:'',answerImage:null,timeMode:'default',time:30,hints:[]};}
 function normQ(q){
   const d=newQ();const o=Object.assign(d,q||{});
   if(!o.id)o.id=uid();
@@ -655,7 +662,7 @@ function normQ(q){
   o.hints.forEach(h=>{h.image=okImg(h.image);h.text=String(h.text||'');h.mode=h.mode==='time'?'time':'button';h.at=Math.max(1,+h.at||10);});
   ['text','answerText'].forEach(k=>{o[k]=String(o[k]||'');});
   o.type=['choice','ox','free','page'].includes(o.type)?o.type:'choice';
-  o.size=['s','m','l'].includes(o.size)?o.size:'m';o.align=o.align==='left'?'left':'center';
+  o.size=['s','m','l'].includes(o.size)?o.size:'m';o.align=o.align==='left'?'left':'center';o.layout=o.layout==='top'?'top':'side';
   fixQ(o);
   o.choicesShow=['start','button','time'].includes(o.choicesShow)?o.choicesShow:'start';
   o.reveal=['none','tiles','blur','zoom'].includes(o.reveal)?o.reveal:'none';o.tiles=[4,9,16].includes(+o.tiles)?+o.tiles:9;
@@ -849,6 +856,7 @@ function renderForm(){
     <div class="frow"><span class="lab">もじ</span><textarea data-f="text" style="min-height:130px" placeholder="れい：ふくろうクイズ&#10;（ぎょうを かえると、そのまま かわるよ）">${esc(q.text)}</textarea>${rp(q.text)}
       <span class="note">ふりがな：ことばを えらんで、うえの「ふりがな」ボタンを おしてね</span></div>
     <div class="frow"><span class="lab">${R('画像','がぞう')}</span>${imgSlot('image',q.image)}</div>
+    ${q.image?`<div class="frow"><span class="lab">${R('画像','がぞう')}の ならべかた</span>${seg('layout',q.layout,[['side','もじの ひだり'],['top','もじの うえ']])}</div>`:''}
     <div class="frow"><span class="lab">もじの おおきさ</span>${seg('size',q.size,[['l','おおきい（ひょうし）'],['m','ふつう'],['s','ちいさい（ながい せつめい）']])}</div>
     <div class="frow"><span class="lab">もじの ならび</span>${seg('align',q.align,[['center','まんなか'],['left','ひだりそろえ']])}</div>
   </section>`:''}
@@ -858,6 +866,7 @@ ${isPg?'':`
     <div class="frow"><span class="lab">${R('問題文','もんだいぶん')}</span><textarea data-f="text" placeholder="れい：この ${R('人','ひと')}の しごとは なにかな？">${esc(q.text)}</textarea>${rp(q.text)}
       <span class="note">ふりがな：ことばを えらんで、うえの「ふりがな」ボタンを おしてね</span></div>
     <div class="frow"><span class="lab">${R('問題','もんだい')}の ${R('画像','がぞう')}</span>${imgSlot('image',q.image)}</div>
+    ${q.image?`<div class="frow"><span class="lab">${R('画像','がぞう')}の ならべかた</span>${seg('layout',q.layout,[['side','もじの ひだり'],['top','もじの うえ']])}</div>`:''}
     ${q.image?`<div class="frow"><span class="lab">${R('画像','がぞう')}の ${R('見','み')}せかた</span>${seg('reveal',q.reveal,[['none','ふつう'],['tiles','パネルを めくる'],['blur','ぼかしが とれる'],['zoom','アップから ひいていく']])}</div>
       ${q.reveal==='tiles'?`<div class="frow"><span class="lab">パネルの かず</span>${seg('tiles',q.tiles,[['4','4まい'],['9','9まい'],['16','16まい']])}<span class="note">めくる じゅんばんは ばらばらに なるよ</span></div>`:''}
       ${q.reveal==='zoom'?`<div class="frow"><span class="lab">さいしょに アップに する ところ</span><div class="zpick" data-zpick="1"><img src="${esc(q.image)}" alt=""><span class="zdot" style="left:${q.zoomX}%;top:${q.zoomY}%"></span></div><span class="note">${R('画像','がぞう')}の なかを クリックして えらんでね</span></div>`:''}
@@ -1018,7 +1027,7 @@ function renderPlay(){
   const hasImg=!!q.image,hasText=!!plain(q.text);
   body.className='pbody';
   body.innerHTML=`<div class="pmain">
-      <div class="qbox ${hasImg?'':'noimg'} ${hasText?'':'notext'} ${isPage(q)?`pg sz-${q.size} al-${q.align}`:''}">
+      <div class="qbox ${hasImg?'':'noimg'} ${hasText?'':'notext'} ${hasImg&&q.layout==='top'?'lay-top':''} ${isPage(q)?`pg sz-${q.size} al-${q.align}`:''}">
         ${hasImg?(q.reveal!=='none'?`<div class="qimg" id="pQimg"><div class="rv" id="pRv"><img src="${esc(q.image)}" alt="" id="pRvImg"></div></div>`:`<div class="qimg"><img src="${esc(q.image)}" alt=""></div>`):''}
         ${hasText?`<div class="qtext"><div>${fmt(q.text)}</div></div>`:''}
         <div class="apanel" id="pAns" hidden></div>
